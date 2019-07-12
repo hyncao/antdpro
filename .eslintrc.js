@@ -8,5 +8,6 @@ module.exports = {
   },
   rules: {
     'eslint-comments/disable-enable-pair': 'off',
+    'react/prop-types': 'off',
   },
 };

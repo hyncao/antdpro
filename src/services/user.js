@@ -1,10 +1,17 @@
 import request from '@/utils/request';
-export async function query() {
+
+export function query() {
   return request('/api/users');
 }
-export async function queryCurrent() {
+export function queryCurrent() {
   return request('/api/currentUser');
 }
-export async function queryNotices() {
+export function queryNotices() {
   return request('/api/notices');
+}
+export function userLogin(data) {
+  return request('/api/login/account', {
+    method: 'POST',
+    data,
+  });
 }
