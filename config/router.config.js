@@ -19,19 +19,29 @@ export default [
     ],
   },
   {
-    path: '/',
+    path: '/contract',
     component: '../layouts/BasicLayout',
-    Routes: ['src/pages/Authorized'],
-    authority: ['admin', 'user'],
+    routes: [
+      {
+        path: '/contract',
+        name: 'contract',
+        icon: 'unordered-list',
+        routes: [
+          {
+            path: '/contract/list',
+            name: 'list',
+            component: './ContractList',
+          }
+        ]
+      }
+    ]
+  },
+  {
+    path: '/',
     routes: [
       {
         path: '/',
-        name: 'welcome',
-        icon: 'smile',
-        component: './Welcome',
-      },
-      {
-        component: './404',
+        redirect: './user/login',
       },
     ],
   },

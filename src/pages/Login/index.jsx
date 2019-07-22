@@ -39,7 +39,7 @@ class Login extends Component {
     return (
       <Form onSubmit={this.handleSubmit} className={styles.box}>
         <Form.Item>
-          {getFieldDecorator('用户名', {
+          {getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],
           })(
             <Input
@@ -49,7 +49,7 @@ class Login extends Component {
           )}
         </Form.Item>
         <Form.Item>
-          {getFieldDecorator('密码', {
+          {getFieldDecorator('password', {
             rules: [{ required: true, message: '请输入密码' }],
           })(
             <Input
