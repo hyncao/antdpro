@@ -1,5 +1,8 @@
+import { delay } from '@/utils/utils';
+
 export default {
-  'POST /api/contract/getList': (req, res) => {
+  'POST /api/contract/getList': async (req, res) => {
+    await delay(2000);
     const { body } = req;
     res.send({
       code: 200,
@@ -38,6 +41,8 @@ export default {
           number: 12,
         },
       ],
+      currentPage: 0,
+      total: 50,
     });
   },
 };

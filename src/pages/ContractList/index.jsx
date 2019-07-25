@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
-import router from 'umi/router';
+import Link from 'umi/link';
 import {
   Row, Col, Form, Input, DatePicker, Select, Button, Table,
 } from 'antd';
 import { BlankLine } from '@/components';
+import { delay } from '@/utils/utils';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -15,27 +16,43 @@ class SearchInList extends Component {
   constructor(props) {
     super(props);
     this.state = {};
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.getList = this.getList.bind(this);
+    this.tableSearch = this.tableSearch.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
-  handleSubmit(e) {
-    e.preventDefault();
+  getList(pageNum = 1) {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
+        const { signeddate } = values;
+        const data = { ...values, signeddate: signeddate && signeddate.format('YYYY-MM-DD') };
         dispatch({
           type: 'contractList/list',
-          payload: values,
+          payload: { ...data, pageNum },
         });
       }
     });
   }
 
+  tableSearch(e) {
+    e.preventDefault();
+    this.getList();
+  }
+
+  handleReset() {
+    const { form: { resetFields } } = this.props;
+    resetFields();
+  }
+
   render() {
-    const { form: { getFieldDecorator }, contractList: { list } } = this.props;
+    const { form: { getFieldDecorator }, contractList: { tableLoading, list, paginationOption } } = this.props;
+    paginationOption.onChange = this.getList;
+    paginationOption.onShowSizeChange = this.getList;
 
     // 设置映射关系
     const dataSource = list.map(i => ({
+      id: i.id,
       key: i.id,
       contractId: i.contractId,
       businessId: i.businessId,
@@ -51,10 +68,7 @@ class SearchInList extends Component {
         title: '合同编号',
         dataIndex: 'contractId',
         key: 'contractId',
-        render: (text, record) => {
-          console.log(record);
-          return (<a onClick={this.jumpUrl}>{text}</a>);
-        },
+        render: (text, record) => <Link to={`/user/detail?id=${record.id}`}>{text}</Link>,
       },
       {
         title: '业务编号',
@@ -102,7 +116,7 @@ class SearchInList extends Component {
     return (
       <>
         {/* 搜索部分 */}
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.tableSearch}>
           <BlankLine />
           <Row gutter={10}>
             <Col span={5}>
@@ -145,16 +159,22 @@ class SearchInList extends Component {
           </Row>
           <Row gutter={20}>
             <Col span={2}>
-              <Button htmlType="submit" type="primary">搜索</Button>
+              <Button loading={tableLoading} htmlType="submit" type="primary">搜索</Button>
             </Col>
             <Col span={2}>
-              <Button type="danger">清空</Button>
+              <Button type="danger" onClick={this.handleReset}>清空</Button>
             </Col>
           </Row>
         </Form>
         <BlankLine len={2} />
         {/* 列表部分 */}
-        <Table rowKey={record => record.key} dataSource={dataSource} columns={columns} />
+        <Table
+          loading={tableLoading}
+          rowKey={record => record.key}
+          dataSource={dataSource}
+          columns={columns}
+          pagination={paginationOption}
+        />
       </>
     );
   }

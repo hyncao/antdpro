@@ -21,4 +21,8 @@ const isAntDesignProOrDev = () => {
   return isAntDesignPro();
 };
 
-export { isAntDesignProOrDev, isAntDesignPro, isUrl };
+const delay = t => new Promise(res => setTimeout(res, t));
+
+export {
+  isAntDesignProOrDev, isAntDesignPro, isUrl, delay,
+};
