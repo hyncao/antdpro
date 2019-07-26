@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import {
-  Row, Col, Form, Input, DatePicker, Select, Button, Table,
+  Row, Col, Form, Input, DatePicker, Select, Button, Table, Modal,
 } from 'antd';
-import { BlankLine } from '@/components';
-import { delay } from '@/utils/utils';
+import { BlankLine, ModalContractListAdd } from '@/components';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -19,6 +18,7 @@ class SearchInList extends Component {
     this.getList = this.getList.bind(this);
     this.tableSearch = this.tableSearch.bind(this);
     this.handleReset = this.handleReset.bind(this);
+    this.addContract = this.addContract.bind(this);
   }
 
   getList(pageNum = 1) {
@@ -45,8 +45,21 @@ class SearchInList extends Component {
     resetFields();
   }
 
+  addContract() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'contractList/controlModal',
+      payload: { modalVisible: true },
+    });
+  }
+
   render() {
-    const { form: { getFieldDecorator }, contractList: { tableLoading, list, paginationOption } } = this.props;
+    const {
+      form: { getFieldDecorator },
+      contractList: {
+        tableLoading, list, paginationOption,
+      },
+    } = this.props;
     paginationOption.onChange = this.getList;
     paginationOption.onShowSizeChange = this.getList;
 
@@ -123,7 +136,9 @@ class SearchInList extends Component {
               <Form.Item className={styles.searchItem} label="合同编号">
                 {getFieldDecorator('concode', {})(
                   <Input
+                    className={styles.ipt}
                     placeholder="请输入合同编号"
+                    maxLength={16}
                   />,
                 )}
               </Form.Item>
@@ -132,7 +147,9 @@ class SearchInList extends Component {
               <Form.Item className={styles.searchItem} label="客户名称">
                 {getFieldDecorator('accountall', {})(
                   <Input
+                    className={styles.ipt}
                     placeholder="请输入客户名称"
+                    maxLength={32}
                   />,
                 )}
               </Form.Item>
@@ -140,7 +157,7 @@ class SearchInList extends Component {
             <Col span={5}>
               <Form.Item className={styles.searchItem} label="合同类型">
                 {getFieldDecorator('contype', { initialValue: '' })(
-                  <Select style={{ width: 140 }}>
+                  <Select style={{ width: 140 }} className={styles.ipt}>
                     <Option value="">全部</Option>
                     <Option value="1">普通合同</Option>
                     <Option value="2">框架合同</Option>
@@ -152,7 +169,7 @@ class SearchInList extends Component {
             <Col span={5}>
               <Form.Item className={styles.searchItem} label="签约日期">
                 {getFieldDecorator('signeddate', {})(
-                  <DatePicker />,
+                  <DatePicker className={styles.ipt}/>,
                 )}
               </Form.Item>
             </Col>
@@ -163,6 +180,9 @@ class SearchInList extends Component {
             </Col>
             <Col span={2}>
               <Button type="danger" onClick={this.handleReset}>清空</Button>
+            </Col>
+            <Col span={3}>
+              <Button type="primary" onClick={this.addContract}>新增合同</Button>
             </Col>
           </Row>
         </Form>
@@ -175,6 +195,7 @@ class SearchInList extends Component {
           columns={columns}
           pagination={paginationOption}
         />
+        <ModalContractListAdd />
       </>
     );
   }

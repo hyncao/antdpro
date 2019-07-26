@@ -45,4 +45,20 @@ export default {
       total: 50,
     });
   },
+
+  'POST /api/contract/getChooseManager': async (req, res) => {
+    await delay(2000);
+    const { body: { keyword } } = req;
+    let list;
+    list = [
+      { id: '1', name: '赵经理' },
+    ];
+    console.log(keyword);
+    res.send({
+      code: 200,
+      list,
+      currentPage: 0,
+      total: 30,
+    });
+  },
 };

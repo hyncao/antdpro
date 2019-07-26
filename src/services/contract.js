@@ -6,3 +6,10 @@ export function getList(data) {
     data,
   });
 }
+
+export function getChooseManager(data) {
+  return request('/api/contract/getChooseManager', {
+    method: 'POST',
+    data,
+  });
+}
