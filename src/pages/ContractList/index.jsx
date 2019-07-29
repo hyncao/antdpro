@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import {
-  Row, Col, Form, Input, DatePicker, Select, Button, Table, Modal,
+  Row, Col, Form, Input, DatePicker, Select, Button, Table,
 } from 'antd';
 import { BlankLine, ModalContractListAdd } from '@/components';
 import styles from './index.less';

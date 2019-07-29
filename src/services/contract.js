@@ -13,3 +13,10 @@ export function getChooseManager(data) {
     data,
   });
 }
+
+export function getChooseCustom(data) {
+  return request('/api/contract/getChooseCustom', {
+    method: 'POST',
+    data,
+  });
+}

@@ -48,12 +48,52 @@ export default {
 
   'POST /api/contract/getChooseManager': async (req, res) => {
     await delay(2000);
-    const { body: { keyword } } = req;
+    const { body: { accountManager } } = req;
     let list;
-    list = [
-      { id: '1', name: '赵经理' },
-    ];
-    console.log(keyword);
+    if (accountManager) {
+      list = [
+        { id: '1', name: '赵经理' },
+      ];
+    } else {
+      list = [
+        { id: '1', name: '赵经理' },
+        { id: '2', name: '钱经理' },
+        { id: '3', name: '孙经理' },
+        { id: '4', name: '李经理' },
+        { id: '5', name: '周经理' },
+        { id: '6', name: '吴经理' },
+        { id: '7', name: '郑经理' },
+        { id: '8', name: '王经理' },
+      ];
+    }
+    res.send({
+      code: 200,
+      list,
+      currentPage: 0,
+      total: 30,
+    });
+  },
+
+  'POST /api/contract/getChooseCustom': async (req, res) => {
+    await delay(2000);
+    const { body: { accountCustom } } = req;
+    let list;
+    if (accountCustom) {
+      list = [
+        { id: '1', name: '客户一', aka: '一' },
+      ];
+    } else {
+      list = [
+        { id: '1', name: '客户一', aka: '一' },
+        { id: '2', name: '客户二', aka: '二' },
+        { id: '3', name: '客户三', aka: '三' },
+        { id: '4', name: '客户四', aka: '四' },
+        { id: '5', name: '客户五', aka: '五' },
+        { id: '6', name: '客户六', aka: '六' },
+        { id: '7', name: '客户七', aka: '七' },
+        { id: '8', name: '客户八', aka: '八' },
+      ];
+    }
     res.send({
       code: 200,
       list,

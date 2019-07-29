@@ -1,5 +1,5 @@
 import {
-  getList, getChooseManager,
+  getList, getChooseManager, getChooseCustom,
 } from '@/services/contract';
 
 export default {
@@ -16,12 +16,22 @@ export default {
     modalVisible: false,
     chooseManagerModalVisible: false,
     chooseManagerList: [],
+    chooseManagerArr: [],
     chooseManagerPagination: {
       current: 1,
       pageSize: 10,
       pageSizeOptions: ['10', '20', '30'],
     },
     chooseManagerListLoading: false,
+    chooseCustomModalVisible: false,
+    chooseCustomList: [],
+    chooseCustomArr: [],
+    chooseCustomPagination: {
+      current: 1,
+      pageSize: 10,
+      pageSizeOptions: ['10', '20', '30'],
+    },
+    chooseCustomListLoading: false,
   },
 
   effects: {
@@ -52,6 +62,8 @@ export default {
         type: 'save',
         payload: {
           modalVisible: payload.modalVisible,
+          chooseManagerArr: [],
+          chooseCustomArr: [],
         },
       });
     },
@@ -82,6 +94,54 @@ export default {
             total: res.total,
           },
           chooseManagerListLoading: false,
+        },
+      });
+    },
+
+    * chooseManagerArr({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          chooseManagerArr: payload.chooseManagerArr,
+        },
+      });
+    },
+
+    * controlChooseCustom({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          chooseCustomModalVisible: payload.chooseCustomModalVisible,
+        },
+      });
+    },
+
+    * chooseCustomList({ payload }, { call, put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          chooseCustomListLoading: true,
+        },
+      });
+      const res = yield call(getChooseCustom, payload);
+      yield put({
+        type: 'save',
+        payload: {
+          chooseCustomList: res.list,
+          chooseCustomPagination: {
+            current: payload.pageNum,
+            total: res.total,
+          },
+          chooseCustomListLoading: false,
+        },
+      });
+    },
+
+    * chooseCustomArr({ payload }, { put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          chooseCustomArr: payload.chooseCustomArr,
         },
       });
     },

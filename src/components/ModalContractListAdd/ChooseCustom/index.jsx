@@ -7,11 +7,11 @@ import styles from './index.less';
 
 @connect(({ contractList }) => ({ contractList }))
 @Form.create()
-class ChooseManager extends Component {
+class ChooseCustom extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      chooseManagerArr: [],
+      chooseCustomArr: [],
     };
     this.getList = this.getList.bind(this);
     this.modalOk = this.modalOk.bind(this);
@@ -29,7 +29,7 @@ class ChooseManager extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         dispatch({
-          type: 'contractList/chooseManagerList',
+          type: 'contractList/chooseCustomList',
           payload: { ...values, pageNum },
         });
       }
@@ -38,10 +38,10 @@ class ChooseManager extends Component {
 
   modalOk() {
     const { dispatch } = this.props;
-    const { chooseManagerArr } = this.state;
+    const { chooseCustomArr } = this.state;
     dispatch({
-      type: 'contractList/chooseManagerArr',
-      payload: { chooseManagerArr },
+      type: 'contractList/chooseCustomArr',
+      payload: { chooseCustomArr },
     });
     this.modalClose();
   }
@@ -49,8 +49,8 @@ class ChooseManager extends Component {
   modalClose() {
     const { dispatch } = this.props;
     dispatch({
-      type: 'contractList/controlChooseManager',
-      payload: { chooseManagerModalVisible: false },
+      type: 'contractList/controlChooseCustom',
+      payload: { chooseCustomModalVisible: false },
     });
   }
 
@@ -77,20 +77,20 @@ class ChooseManager extends Component {
     const {
       form: { getFieldDecorator },
       contractList: {
-        chooseManagerModalVisible, chooseManagerListLoading,
-        chooseManagerList, chooseManagerPagination,
+        chooseCustomModalVisible, chooseCustomListLoading,
+        chooseCustomList, chooseCustomPagination,
       },
     } = this.props;
     const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
-        const chooseManagerArr = selectedRows;
-        this.setState({ chooseManagerArr });
+        const chooseCustomArr = selectedRows;
+        this.setState({ chooseCustomArr });
       },
     };
-    chooseManagerPagination.onChange = this.getList;
-    chooseManagerPagination.onShowSizeChange = this.getList;
+    chooseCustomPagination.onChange = this.getList;
+    chooseCustomPagination.onShowSizeChange = this.getList;
 
-    const dataSource = chooseManagerList.map(i => ({
+    const dataSource = chooseCustomList.map(i => ({
       id: i.id,
       key: i.id,
       managerName: i.name,
@@ -106,7 +106,7 @@ class ChooseManager extends Component {
     return (
       <Modal
         title="新增合同"
-        visible={chooseManagerModalVisible}
+        visible={chooseCustomModalVisible}
         onOk={this.modalOk}
         onCancel={this.modalClose}
       >
@@ -130,14 +130,14 @@ class ChooseManager extends Component {
         </Form>
         <Table
           rowSelection={rowSelection}
-          loading={chooseManagerListLoading}
+          loading={chooseCustomListLoading}
           dataSource={dataSource}
           columns={columns}
-          pagination={chooseManagerPagination}
+          pagination={chooseCustomPagination}
         />
       </Modal>
     );
   }
 }
 
-export default ChooseManager;
+export default ChooseCustom;

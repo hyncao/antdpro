@@ -4,6 +4,7 @@ import {
 } from 'antd';
 import { connect } from 'dva';
 import ChooseManager from './ChooseManager';
+import ChooseCustom from './ChooseCustom';
 import styles from './index.less';
 
 const { Option } = Select;
@@ -13,10 +14,34 @@ const { Option } = Select;
 class ModalContractListAdd extends Component {
   constructor(props) {
     super(props);
+    this.state = {
+      chooseManagerArr: [],
+    };
     this.modalClose = this.modalClose.bind(this);
     this.validateConcode = this.validateConcode.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.chooseManager = this.chooseManager.bind(this);
+    this.chooseCustom = this.chooseCustom.bind(this);
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    const { contractList: { chooseManagerArr, chooseCustomArr }, form: { setFieldsValue } } = props;
+    const {
+      chooseManagerArr: stateChooseManagerArr, chooseCustomArr: stateChooseCustomArr,
+    } = state;
+    if (JSON.stringify(stateChooseManagerArr) !== JSON.stringify(chooseManagerArr)) {
+      setFieldsValue({
+        accountManager: chooseManagerArr.map(i => i.id),
+      });
+      return { chooseManagerArr };
+    }
+    if (JSON.stringify(stateChooseCustomArr) !== JSON.stringify(chooseCustomArr)) {
+      setFieldsValue({
+        accountName: chooseCustomArr.map(i => i.id),
+      });
+      return { chooseCustomArr };
+    }
+    return null;
   }
 
   modalClose() {
@@ -42,6 +67,7 @@ class ModalContractListAdd extends Component {
     const { form } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
+        console.log(values);
         this.modalClose();
       }
     });
@@ -55,8 +81,19 @@ class ModalContractListAdd extends Component {
     });
   }
 
+  chooseCustom() {
+    const { dispatch } = this.props;
+    dispatch({
+      type: 'contractList/controlChooseCustom',
+      payload: { chooseCustomModalVisible: true },
+    });
+  }
+
   render() {
-    const { form: { getFieldDecorator }, contractList: { modalVisible } } = this.props;
+    const {
+      form: { getFieldDecorator },
+      contractList: { modalVisible, chooseManagerArr, chooseCustomArr },
+    } = this.props;
     const prefixSelector = getFieldDecorator('date', {
       initialValue: '2019',
     })(
@@ -107,11 +144,31 @@ class ModalContractListAdd extends Component {
                 { required: true, message: '请选择客户经理' },
               ],
             })(
-              <Button type="primary" onClick={this.chooseManager}>选择</Button>,
+              <>
+                {chooseManagerArr.length > 0
+                  && (<input className={styles.backIpt} readOnly value={chooseManagerArr.map(i => i.managerName).join('，')} />)
+                }
+                <Button type="primary" onClick={this.chooseManager}>选择</Button>
+              </>,
+            )}
+          </Form.Item>
+          <Form.Item className={styles.item} label="客户名称">
+            {getFieldDecorator('accountName', {
+              rules: [
+                { required: true, message: '请选择客户名称' },
+              ],
+            })(
+              <>
+                {chooseCustomArr.length > 0
+                  && (<input className={styles.backIpt} readOnly value={chooseCustomArr.map(i => i.managerName).join('，')} />)
+                }
+                <Button type="primary" onClick={this.chooseCustom}>选择</Button>
+              </>,
             )}
           </Form.Item>
         </Form>
         <ChooseManager />
+        <ChooseCustom />
       </Modal>
     );
   }
