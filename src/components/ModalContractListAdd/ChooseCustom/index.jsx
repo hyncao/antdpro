@@ -68,11 +68,6 @@ class ChooseCustom extends Component {
     this.getList();
   }
 
-  reset() {
-    const { form: { resetFields } } = this.props;
-    resetFields('accountManager');
-  }
-
   render() {
     const {
       form: { getFieldDecorator },
@@ -114,7 +109,7 @@ class ChooseCustom extends Component {
           <Row gutter={10}>
             <Col span={14}>
               <Form.Item label="客户经理" className={styles.formItem}>
-                {getFieldDecorator('accountManager')(
+                {getFieldDecorator('accountCustom')(
                   <Input
                     placeholder="搜索客户经理"
                     maxLength={8}

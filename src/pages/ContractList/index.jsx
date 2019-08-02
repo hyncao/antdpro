@@ -21,6 +21,10 @@ class SearchInList extends Component {
     this.addContract = this.addContract.bind(this);
   }
 
+  componentDidMount() {
+    this.getList();
+  }
+
   getList(pageNum = 1) {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
@@ -57,11 +61,15 @@ class SearchInList extends Component {
     const {
       form: { getFieldDecorator },
       contractList: {
-        tableLoading, list, paginationOption,
+        tableLoading, list, paginationOption, reloadFlag,
       },
     } = this.props;
     paginationOption.onChange = this.getList;
     paginationOption.onShowSizeChange = this.getList;
+
+    if (reloadFlag) {
+      this.getList();
+    }
 
     // 设置映射关系
     const dataSource = list.map(i => ({

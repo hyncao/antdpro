@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {
-  Form, Modal, Input, Select, Button,
+  Form, Modal, Input, Select, Button, DatePicker,
 } from 'antd';
 import { connect } from 'dva';
 import ChooseManager from './ChooseManager';
 import ChooseCustom from './ChooseCustom';
 import styles from './index.less';
 
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 @connect(({ contractList }) => ({ contractList }))
@@ -62,12 +63,28 @@ class ModalContractListAdd extends Component {
     }
   }
 
+  validateConAccount(rule, value, callback) {
+    const reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9]([0-9])?$)/;
+    if (value && !reg.test(value)) {
+      callback('合同金额整数最多9位，小数最多2位');
+    } else {
+      callback();
+    }
+  }
+
   submitForm(e) {
     e.preventDefault();
-    const { form } = this.props;
+    const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        console.log(values);
+        const data = {
+          ...values,
+          during: [values.during[0].format('YYYY-MM-DD'), values.during[1].format('YYYY-MM-DD')],
+        };
+        console.log(data);
+        dispatch({
+          type: 'contractList/reloadContractList',
+        });
         this.modalClose();
       }
     });
@@ -121,7 +138,7 @@ class ModalContractListAdd extends Component {
             })(
               <Input
                 addonBefore={prefixSelector}
-                placeholder="合同编号"
+                placeholder="请输入合同编号"
                 maxLength={4}
               />,
             )}
@@ -133,7 +150,7 @@ class ModalContractListAdd extends Component {
               ],
             })(
               <Input
-                placeholder="业务编号"
+                placeholder="请输入业务编号"
                 maxLength={4}
               />,
             )}
@@ -164,6 +181,41 @@ class ModalContractListAdd extends Component {
                 }
                 <Button type="primary" onClick={this.chooseCustom}>选择</Button>
               </>,
+            )}
+          </Form.Item>
+          <Form.Item className={styles.item} label="合同类型">
+            {getFieldDecorator('contype', {
+              initialValue: '1',
+              rules: [
+                { required: true, message: '请选择合同类型' },
+              ],
+            })(
+              <Select>
+                <Option value="1">普通合同</Option>
+                <Option value="2">框架合同</Option>
+                <Option value="3">代理合同</Option>
+              </Select>,
+            )}
+          </Form.Item>
+          <Form.Item className={styles.item} label="合同金额">
+            {getFieldDecorator('conAccount', {
+              rules: [
+                { validator: this.validateConAccount },
+              ],
+            })(
+              <Input
+                placeholder="请输入合同金额"
+                maxLength={4}
+              />,
+            )}
+          </Form.Item>
+          <Form.Item className={styles.item} label="合同有效期">
+            {getFieldDecorator('during', {
+              rules: [
+                { required: true, message: '请选择合同有效期' },
+              ],
+            })(
+              <RangePicker/>,
             )}
           </Form.Item>
         </Form>

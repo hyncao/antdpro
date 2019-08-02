@@ -32,6 +32,7 @@ export default {
       pageSizeOptions: ['10', '20', '30'],
     },
     chooseCustomListLoading: false,
+    reloadFlag: false,
   },
 
   effects: {
@@ -50,6 +51,7 @@ export default {
           total: res.total,
         },
         tableLoading: false,
+        reloadFlag: false,
       };
       yield put({
         type: 'save',
@@ -142,6 +144,15 @@ export default {
         type: 'save',
         payload: {
           chooseCustomArr: payload.chooseCustomArr,
+        },
+      });
+    },
+
+    * reloadContractList({ put }) {
+      yield put({
+        type: 'save',
+        payload: {
+          reloadFlag: true,
         },
       });
     },
