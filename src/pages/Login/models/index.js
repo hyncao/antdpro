@@ -18,11 +18,7 @@ export default {
       put,
     }) {
       const res = yield call(userLogin, payload);
-      const result = { result: res };
-      yield put({
-        type: 'save',
-        payload: result,
-      });
+      return res;
     },
   },
 

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Form, Icon, Input, Button, Checkbox,
+  Form, Icon, Input, Button, Checkbox, Alert,
 } from 'antd';
 import { connect } from 'dva';
 import styles from './index.less';
@@ -10,34 +10,37 @@ import styles from './index.less';
 class Login extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
-  }
-
-  static getDerivedStateFromProps(props, state) {
-    if (props.userLogin.result.status) {
-      console.log(props.userLogin.result);
-    }
-    return null;
+    this.state = {
+      text: '',
+    };
   }
 
   handleSubmit = e => {
     e.preventDefault();
     const { form: { validateFields } } = this.props;
-    validateFields((err, values) => {
+    validateFields(async (err, values) => {
       if (!err) {
         const { dispatch } = this.props;
-        dispatch({
+        const result = await dispatch({
           type: 'userLogin/login',
           payload: values,
         });
+        if (result.status === 'error') {
+          this.setState({ text: '用户名或密码错误，应为user，ant.design' });
+        } else {
+          const { history } = this.props;
+          history.push('/contract/list');
+        }
       }
     });
   };
 
   render() {
+    const { text } = this.state;
     const { form: { getFieldDecorator } } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} className={styles.box}>
+        {text && <Alert message={text} type="info" showIcon />}
         <Form.Item>
           {getFieldDecorator('userName', {
             rules: [{ required: true, message: '请输入用户名' }],

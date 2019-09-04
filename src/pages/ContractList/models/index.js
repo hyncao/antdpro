@@ -148,11 +148,12 @@ export default {
       });
     },
 
-    * reloadContractList({ put }) {
+    * reloadContractList({ payload }, { put }) {
       yield put({
         type: 'save',
         payload: {
           reloadFlag: true,
+          modalVisible: payload.modalVisible,
         },
       });
     },

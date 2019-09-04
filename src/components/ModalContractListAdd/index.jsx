@@ -84,8 +84,8 @@ class ModalContractListAdd extends Component {
         console.log(data);
         dispatch({
           type: 'contractList/reloadContractList',
+          payload: { modalVisible: false },
         });
-        this.modalClose();
       }
     });
   }
