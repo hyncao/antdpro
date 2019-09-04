@@ -49,4 +49,6 @@ export default {
   'menu.editor.koni': '拓扑编辑器',
   'menu.contract': '合同管理',
   'menu.contract.list': '合同列表',
+  'menu.ad': '广告管理',
+  'menu.ad.list': '广告列表',
 };

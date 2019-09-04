@@ -17,7 +17,7 @@ const GlobalHeaderRight = props => {
 
   return (
     <div className={className}>
-      <HeaderSearch
+      {/* <HeaderSearch
         className={`${styles.action} ${styles.search}`}
         placeholder={formatMessage({
           id: 'component.globalHeader.search',
@@ -39,7 +39,7 @@ const GlobalHeaderRight = props => {
         onPressEnter={value => {
           console.log('enter', value);
         }}
-      />
+      /> */}
       <Avatar />
       {/* <SelectLang className={styles.action} /> */}
     </div>

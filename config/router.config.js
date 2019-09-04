@@ -19,6 +19,24 @@ export default [
     ],
   },
   {
+    path: '/ad',
+    component: '../layouts/BasicLayout',
+    routes: [
+      {
+        path: '/ad',
+        name: 'ad',
+        icon: 'unordered-list',
+        routes: [
+          {
+            path: '/ad/list',
+            name: 'list',
+            component: './AdList',
+          }
+        ]
+      }
+    ]
+  },
+  {
     path: '/contract',
     component: '../layouts/BasicLayout',
     routes: [

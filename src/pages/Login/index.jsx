@@ -3,6 +3,7 @@ import {
   Form, Icon, Input, Button, Checkbox, Alert,
 } from 'antd';
 import { connect } from 'dva';
+import { getLS, setLS, removeLS } from '../../utils/utils';
 import styles from './index.less';
 
 @connect(({ userLogin }) => ({ userLogin }))
@@ -13,20 +14,28 @@ class Login extends Component {
     this.state = {
       text: '',
     };
+    this.rememberMe = this.rememberMe.bind(this);
+    this.forgetMe = this.forgetMe.bind(this);
   }
 
   handleSubmit = e => {
     e.preventDefault();
-    const { form: { validateFields } } = this.props;
+    const { form: { validateFields, getFieldValue } } = this.props;
     validateFields(async (err, values) => {
       if (!err) {
+        const remember = getFieldValue('remember');
+        if (remember) {
+          this.rememberMe();
+        } else {
+          this.forgetMe();
+        }
         const { dispatch } = this.props;
         const result = await dispatch({
           type: 'userLogin/login',
           payload: values,
         });
         if (result.status === 'error') {
-          this.setState({ text: '用户名或密码错误，应为user，ant.design' });
+          this.setState({ text: '用户名或密码错误，应为admin，123' });
         } else {
           const { history } = this.props;
           history.push('/contract/list');
@@ -34,6 +43,19 @@ class Login extends Component {
       }
     });
   };
+
+  rememberMe() {
+    const { form: { getFieldValue } } = this.props;
+    const userName = getFieldValue('userName');
+    const password = getFieldValue('password');
+    setLS('adUserName', userName);
+    setLS('adPassword', password);
+  }
+
+  forgetMe() {
+    removeLS('adUserName');
+    removeLS('adPassword');
+  }
 
   render() {
     const { text } = this.state;
@@ -43,6 +65,7 @@ class Login extends Component {
         {text && <Alert message={text} type="info" showIcon />}
         <Form.Item>
           {getFieldDecorator('userName', {
+            initialValue: getLS('adUserName'),
             rules: [{ required: true, message: '请输入用户名' }],
           })(
             <Input
@@ -53,6 +76,7 @@ class Login extends Component {
         </Form.Item>
         <Form.Item>
           {getFieldDecorator('password', {
+            initialValue: getLS('adPassword'),
             rules: [{ required: true, message: '请输入密码' }],
           })(
             <Input
@@ -67,9 +91,6 @@ class Login extends Component {
             valuePropName: 'checked',
             initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)}
-          <a className="login-form-forgot" href="#1">
-            Forgot password
-          </a>
           <Button type="primary" htmlType="submit" className={styles.btn}>Log in</Button>
         </Form.Item>
       </Form>
