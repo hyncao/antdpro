@@ -38,7 +38,7 @@ class Login extends Component {
           this.setState({ text: '用户名或密码错误，应为admin，123' });
         } else {
           const { history } = this.props;
-          history.push('/contract/list');
+          history.push('/ad/list');
         }
       }
     });
