@@ -3,6 +3,7 @@ import {
   Row, Col, Form, Input, Select, Button,
 } from 'antd';
 import BlankLine from '../BlankLine';
+import AuthWrap from '../AuthWrap';
 import styles from './index.less';
 
 const { Item } = Form;
@@ -56,11 +57,13 @@ class SearchBox extends Component {
         )
       }
       return (
-        <Col span={5} key={i.name}>
-          <Item className={styles.searchItem} label={i.label}>
-            {getFieldDecorator(i.name, { initialValue: i.initialValue })(component)}
-          </Item>
-        </Col>
+        <AuthWrap authLimit={i.authLimit} key={i.name}>
+          <Col span={5}>
+            <Item className={styles.searchItem} label={i.label}>
+              {getFieldDecorator(i.name, { initialValue: i.initialValue })(component)}
+            </Item>
+          </Col>
+        </AuthWrap>
       )
     });
 

@@ -3,16 +3,10 @@ import {
 } from '@/services/ad';
 
 export default {
-  namespace: 'adList',
+  namespace: 'adDetail',
 
   state: {
-    tableLoading: false,
-    list: [],
-    paginationOption: {
-      current: 1,
-      pageSize: 10,
-      pageSizeOptions: ['10', '20', '30'],
-    },
+    loading: false,
   },
 
   effects: {

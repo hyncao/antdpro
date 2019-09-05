@@ -51,4 +51,5 @@ export default {
   'menu.contract.list': '合同列表',
   'menu.ad': '广告管理',
   'menu.ad.list': '广告列表',
+  'menu.ad.detail': '广告详情',
 };

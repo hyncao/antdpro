@@ -33,6 +33,12 @@ export default [
             component: './AdList',
           },
           {
+            path: '/ad/detail',
+            name: 'detail',
+            component: './AdDetail',
+            hideInMenu: true,
+          },
+          {
             component: './404',
           },
         ]

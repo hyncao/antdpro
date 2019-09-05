@@ -2,12 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
 import {
-  Row, Col, Form, Input, DatePicker, Select, Button, Table,
+  Form, DatePicker, Button, Table,
 } from 'antd';
-import { BlankLine, SearchBox } from '@/components';
+import { BlankLine, SearchBox } from '@/components/index.jsx';
 import styles from './index.less';
 
-const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 @connect(({ adList }) => ({ adList }))
@@ -62,15 +61,11 @@ class AdList extends Component {
     const {
       form,
       adList: {
-        tableLoading, list, paginationOption, reloadFlag,
+        tableLoading, list, paginationOption,
       },
     } = this.props;
     paginationOption.onChange = this.getList;
     paginationOption.onShowSizeChange = this.getList;
-
-    if (reloadFlag) {
-      this.getList();
-    }
 
     const searchArr = [
       {
@@ -87,6 +82,7 @@ class AdList extends Component {
         name: 'own',
         label: '广告所属',
         maxLength: 16,
+        authLimit: 'admin',
       },
       {
         name: 'videoTitle',
@@ -134,6 +130,7 @@ class AdList extends Component {
       type: i.type,
       state: i.state,
     }));
+
     const columns = [
       {
         title: '添加日期',
@@ -191,7 +188,13 @@ class AdList extends Component {
     return (
       <>
         {/* 搜索部分 */}
-        <SearchBox form={form} handleSearch={this.getList} searchLoading={tableLoading} searchArr={searchArr} bonusBtn={bonusBtn} />
+        <SearchBox
+          form={form}
+          handleSearch={this.getList}
+          searchLoading={tableLoading}
+          searchArr={searchArr}
+          bonusBtn={bonusBtn}
+        />
         <BlankLine len={2} />
         {/* 列表部分 */}
         <Table
