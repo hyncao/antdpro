@@ -4,10 +4,11 @@ import Link from 'umi/link';
 import {
   Row, Col, Form, Input, DatePicker, Select, Button, Table,
 } from 'antd';
-import { BlankLine, ModalContractListAdd } from '@/components';
+import { BlankLine, SearchBox } from '@/components';
 import styles from './index.less';
 
 const { Option } = Select;
+const { RangePicker } = DatePicker;
 
 @connect(({ adList }) => ({ adList }))
 @Form.create()
@@ -59,7 +60,7 @@ class AdList extends Component {
 
   render() {
     const {
-      form: { getFieldDecorator },
+      form,
       adList: {
         tableLoading, list, paginationOption, reloadFlag,
       },
@@ -70,6 +71,54 @@ class AdList extends Component {
     if (reloadFlag) {
       this.getList();
     }
+
+    const searchArr = [
+      {
+        name: 'createDate',
+        label: '添加日期',
+        component: <RangePicker className={styles.ranger} />,
+      },
+      {
+        name: 'adTitle',
+        label: '广告名称',
+        maxLength: 16,
+      },
+      {
+        name: 'own',
+        label: '广告所属',
+        maxLength: 16,
+      },
+      {
+        name: 'videoTitle',
+        label: '视频名称',
+        maxLength: 32,
+      },
+      {
+        name: 'dcpTitle',
+        label: 'DCP名称',
+        maxLength: 32,
+      },
+      {
+        name: 'state',
+        label: '转码状态',
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: '1', text: '转码中' }, { value: '2', text: '转码完成' }],
+      },
+      {
+        name: 'audditState',
+        label: '审核状态',
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: '1', text: '待审核' }, { value: '2', text: '审核中' }, { value: '3', text: '拒绝' }, { value: '4', text: '审核通过' }],
+      },
+      {
+        name: 'publishState',
+        label: '投放状态',
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: '1', text: '未投放' }, { value: '2', text: '已投放' }],
+      },
+    ]
+
+    const bonusBtn = [{ id: '1', btn: <Link to="/ad/detail"><Button type="primary">新增合同</Button></Link> }];
 
     // 设置映射关系
     const dataSource = list.map(i => ({
@@ -142,63 +191,7 @@ class AdList extends Component {
     return (
       <>
         {/* 搜索部分 */}
-        <Form onSubmit={this.tableSearch}>
-          <BlankLine />
-          <Row gutter={10}>
-            <Col span={5}>
-              <Form.Item className={styles.searchItem} label="合同编号">
-                {getFieldDecorator('concode', {})(
-                  <Input
-                    className={styles.ipt}
-                    placeholder="请输入合同编号"
-                    maxLength={16}
-                  />,
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item className={styles.searchItem} label="客户名称">
-                {getFieldDecorator('accountall', {})(
-                  <Input
-                    className={styles.ipt}
-                    placeholder="请输入客户名称"
-                    maxLength={32}
-                  />,
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item className={styles.searchItem} label="合同类型">
-                {getFieldDecorator('contype', { initialValue: '' })(
-                  <Select style={{ width: 140 }} className={styles.ipt}>
-                    <Option value="">全部</Option>
-                    <Option value="1">普通合同</Option>
-                    <Option value="2">框架合同</Option>
-                    <Option value="3">代理合同</Option>
-                  </Select>,
-                )}
-              </Form.Item>
-            </Col>
-            <Col span={5}>
-              <Form.Item className={styles.searchItem} label="签约日期">
-                {getFieldDecorator('signeddate', {})(
-                  <DatePicker className={styles.ipt} />,
-                )}
-              </Form.Item>
-            </Col>
-          </Row>
-          <Row gutter={20}>
-            <Col span={2}>
-              <Button loading={tableLoading} htmlType="submit" type="primary">搜索</Button>
-            </Col>
-            <Col span={2}>
-              <Button type="danger" onClick={this.handleReset}>清空</Button>
-            </Col>
-            <Col span={3}>
-              <Button type="primary" onClick={this.addContract}>新增合同</Button>
-            </Col>
-          </Row>
-        </Form>
+        <SearchBox form={form} handleSearch={this.getList} searchLoading={tableLoading} searchArr={searchArr} bonusBtn={bonusBtn} />
         <BlankLine len={2} />
         {/* 列表部分 */}
         <Table

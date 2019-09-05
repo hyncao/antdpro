@@ -9,9 +9,10 @@ import Link from 'umi/link';
 import { connect } from 'dva';
 import { formatMessage } from 'umi-plugin-react/locale';
 import Authorized from '@/utils/Authorized';
-import RightContent from '@/components/GlobalHeader/RightContent';
+import RightContent from '@/components/GlobalHeader/RightContent.jsx';
 import { isAntDesignPro } from '@/utils/utils';
 import logo from '../assets/logo.svg';
+import './BasicLayout.less';
 
 /**
  * use Authorized check all menu item

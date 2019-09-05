@@ -1,14 +1,14 @@
 export default [
   {
-    path: '/user',
+    path: '/login',
     component: '../layouts/UserLayout',
     routes: [
       {
         path: '/',
-        redirect: './user/login',
+        redirect: './login',
       },
       {
-        path: '/user/login',
+        path: '/login',
         name: 'login',
         icon: 'login',
         component: './Login',
@@ -19,7 +19,7 @@ export default [
     ],
   },
   {
-    path: '/ad',
+    path: '/',
     component: '../layouts/BasicLayout',
     routes: [
       {
@@ -31,15 +31,12 @@ export default [
             path: '/ad/list',
             name: 'list',
             component: './AdList',
-          }
+          },
+          {
+            component: './404',
+          },
         ]
-      }
-    ]
-  },
-  {
-    path: '/contract',
-    component: '../layouts/BasicLayout',
-    routes: [
+      },
       {
         path: '/contract',
         name: 'contract',
@@ -49,21 +46,19 @@ export default [
             path: '/contract/list',
             name: 'list',
             component: './ContractList',
-          }
+          },
+          {
+            component: './404',
+          },
         ]
-      }
-    ]
-  },
-  {
-    path: '/',
-    routes: [
+      },
       {
         path: '/',
-        redirect: './user/login',
+        redirect: './login',
       },
-    ],
-  },
-  {
-    component: './404',
+      {
+        component: './404',
+      },
+    ]
   },
 ]

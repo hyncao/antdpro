@@ -6,6 +6,15 @@ module.exports = {
     ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: true,
     page: true,
   },
+  settings: {
+    "import/resolver": {
+      "alias": {
+        "map": [
+          ["@", "./src"],
+        ],
+      }
+    }
+  },
   rules: {
     'eslint-comments/disable-enable-pair': 'off',
     'react/prop-types': 'off',
