@@ -7,15 +7,8 @@ export function getList(data) {
   });
 }
 
-export function getChooseManager(data) {
-  return request('/api/ad/getChooseManager', {
-    method: 'POST',
-    data,
-  });
-}
-
-export function getChooseCustom(data) {
-  return request('/api/ad/getChooseCustom', {
+export function save(data) {
+  return request('/api/ad/save', {
     method: 'POST',
     data,
   });

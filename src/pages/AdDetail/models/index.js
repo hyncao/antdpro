@@ -1,16 +1,17 @@
 import {
-  getList,
+  save,
 } from '@/services/ad';
 
 export default {
   namespace: 'adDetail',
 
   state: {
-    loading: false,
+    submitLoading: false,
+    chooseCustom: {},
   },
 
   effects: {
-    * list({
+    * save({
       payload,
     }, {
       call,
@@ -19,23 +20,11 @@ export default {
       yield put({
         type: 'save',
         payload: {
-          tableLoading: true,
+          submitLoading: true,
         },
       });
-      const res = yield call(getList, payload);
-      const result = {
-        list: res.list,
-        paginationOption: {
-          current: payload.pageNum,
-          total: res.total,
-        },
-        tableLoading: false,
-        reloadFlag: false,
-      };
-      yield put({
-        type: 'save',
-        payload: result,
-      });
+      const res = yield call(save, payload);
+      return res;
     },
   },
 
