@@ -25,7 +25,7 @@ class AdList extends Component {
     this.getList();
   }
 
-  getList(pageNum = 1) {
+  getList(pageNo = 1) {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
@@ -33,7 +33,7 @@ class AdList extends Component {
         const data = { ...values, signeddate: signeddate && signeddate.format('YYYY-MM-DD') };
         dispatch({
           type: 'adList/list',
-          payload: { ...data, pageNum },
+          payload: { ...data, pageNo, pageSize: 10 },
         });
       }
     });
@@ -74,29 +74,34 @@ class AdList extends Component {
         component: <RangePicker className={styles.ranger} />,
       },
       {
-        name: 'adTitle',
+        name: 'mediaName',
         label: '广告名称',
         maxLength: 16,
       },
       {
-        name: 'own',
-        label: '广告所属',
+        name: 'customerName',
+        label: '视频所属',
         maxLength: 16,
         authLimit: 'admin',
       },
       {
-        name: 'videoTitle',
+        name: 'orginalName',
         label: '视频名称',
         maxLength: 32,
       },
       {
-        name: 'dcpTitle',
+        name: 'dcpName',
         label: 'DCP名称',
         maxLength: 32,
       },
       {
+        name: 'source',
+        label: 'DCP来源',
+        maxLength: 32,
+      },
+      {
         name: 'state',
-        label: '转码状态',
+        label: '广告状态',
         initialValue: '',
         options: [{ value: '', text: '全部' }, { value: '1', text: '转码中' }, { value: '2', text: '转码完成' }],
       },
@@ -104,13 +109,13 @@ class AdList extends Component {
         name: 'audditState',
         label: '审核状态',
         initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '1', text: '待审核' }, { value: '2', text: '审核中' }, { value: '3', text: '拒绝' }, { value: '4', text: '审核通过' }],
+        options: [{ value: 1, text: '全部' }, { value: 2, text: '待审' }, { value: 3, text: '拒绝' }, { value: 4, text: '通过' }],
       },
       {
         name: 'publishState',
-        label: '投放状态',
+        label: '广告类别',
         initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '1', text: '未投放' }, { value: '2', text: '已投放' }],
+        options: [{ value: '', text: '全部' }, { value: '1', text: '公益' }, { value: '2', text: '商业' }],
       },
     ]
 

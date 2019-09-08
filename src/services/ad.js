@@ -1,7 +1,7 @@
 import request from '@/utils/request';
 
 export function getList(data) {
-  return request('/api/ad/getList', {
+  return request('/api/ad/queryAdlist', {
     method: 'POST',
     data,
   });

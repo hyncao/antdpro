@@ -1,9 +1,8 @@
 import { delay } from '@/utils/utils';
 
 export default {
-  'POST /api/ad/getList': async (req, res) => {
+  'POST /api/ad/queryAdlist': async (req, res) => {
     await delay(2000);
-    const { body } = req;
     res.send({
       code: 200,
       list: [
@@ -54,5 +53,13 @@ export default {
     res.send({
       code: 200,
     });
+  },
+
+  'POST /ad/upload': async (req, res) => {
+    await delay(2000);
+    res.send({
+      code: 200,
+      url: 'http://www.baidu.com',
+    })
   },
 };

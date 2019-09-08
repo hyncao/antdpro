@@ -8,7 +8,7 @@ class ModalChooseCustomer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      value: '',
+      value: props.chooseId,
     }
     this.handleOk = this.handleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
@@ -17,12 +17,9 @@ class ModalChooseCustomer extends Component {
 
   handleOk() {
     const { value } = this.state;
-    const { dispatch, customer: { list } } = this.props;
-    const { name } = list.filter(i => i.id === value);
-    dispatch({
-      type: 'adDetail/chooseCustomer',
-      payload: { chooseCustom: { id: value, name } },
-    })
+    const { handleChoose, customer: { list } } = this.props;
+    const [chooseCustom] = list.filter(i => i.id === value);
+    handleChoose(chooseCustom);
     this.handleCancel();
   }
 
