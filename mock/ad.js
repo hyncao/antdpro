@@ -62,4 +62,28 @@ export default {
       url: 'http://www.baidu.com',
     })
   },
+
+  'POST /ad/detail': async (req, res) => {
+    await delay(2000);
+    const { id } = req.body;
+    const data = {
+      adTitle: `广告${id}`,
+      attribute: id,
+      chooseCustom: { name: `客户${id}`, id },
+      file: {
+        id,
+        name: `视频${id}`,
+        size: 812123200,
+        url: 'http://www.baidu.com',
+      },
+      zTitle: `zhuanma${id}`,
+      wideChannel: 'S_JPEG2K,S_3D,S_MPEG2',
+      blockChannel: 'F_JPEG2K',
+      cutHead: 20,
+    }
+    res.send({
+      code: 200,
+      data,
+    })
+  },
 };

@@ -40,3 +40,21 @@ export const removeLS = key => {
   const ls = window.localStorage;
   ls.removeItem(key);
 };
+
+export const getUrlQuery = name => {
+  if ((typeof name).toLowerCase() !== 'string') {
+    return '';
+  }
+  const search = window.location.search.substr(1);
+  const query = search.split('&');
+  let result;
+  for (let i = 0; i < query.length; i += 1) {
+    if (query[i].indexOf(`${name}=`) > -1) {
+      const arr = query[i].split(`${name}=`);
+      ([, result] = arr);
+      break;
+    }
+  }
+  if (result) return result;
+  return '';
+};

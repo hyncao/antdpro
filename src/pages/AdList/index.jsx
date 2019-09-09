@@ -29,8 +29,12 @@ class AdList extends Component {
     const { form, dispatch } = this.props;
     form.validateFields((err, values) => {
       if (!err) {
-        const { signeddate } = values;
-        const data = { ...values, signeddate: signeddate && signeddate.format('YYYY-MM-DD') };
+        const { createDate } = values;
+        const data = {
+          ...values,
+          startTime: createDate && createDate[0].format('YYYY-MM-DD'),
+          endTime: createDate && createDate[1].format('YYYY-MM-DD'),
+        };
         dispatch({
           type: 'adList/list',
           payload: { ...data, pageNo, pageSize: 10 },

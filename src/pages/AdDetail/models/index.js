@@ -1,5 +1,6 @@
 import {
-  save,
+  saveDetail,
+  getDetail,
 } from '@/services/ad';
 
 export default {
@@ -7,10 +8,11 @@ export default {
 
   state: {
     submitLoading: false,
+    adDetailLoading: false,
   },
 
   effects: {
-    * save({
+    * saveDetail({
       payload,
     }, {
       call,
@@ -22,7 +24,29 @@ export default {
           submitLoading: true,
         },
       });
-      const res = yield call(save, payload);
+      const res = yield call(saveDetail, payload);
+      return res;
+    },
+
+    * getDetail({
+      payload,
+    }, {
+      call,
+      put,
+    }) {
+      yield put({
+        type: 'save',
+        payload: {
+          adDetailLoading: true,
+        },
+      });
+      const res = yield call(getDetail, payload);
+      yield put({
+        type: 'save',
+        payload: {
+          adDetailLoading: false,
+        },
+      });
       return res;
     },
   },
