@@ -30,10 +30,12 @@ class AdList extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { createDate } = values;
-        const data = {
-          ...values,
+        const timeObj = createDate && createDate.length === 2 ? {
           startTime: createDate && createDate[0].format('YYYY-MM-DD'),
           endTime: createDate && createDate[1].format('YYYY-MM-DD'),
+        } : {};
+        const data = {
+          ...values, ...timeObj,
         };
         dispatch({
           type: 'adList/list',
@@ -104,22 +106,22 @@ class AdList extends Component {
         maxLength: 32,
       },
       {
-        name: 'state',
+        name: 'mediaState',
         label: '广告状态',
-        initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '1', text: '转码中' }, { value: '2', text: '转码完成' }],
+        initialValue: '全部',
+        options: [{ value: '全部', text: '全部' }, { value: '转码中', text: '转码中' }, { value: '转码完成', text: '转码完成' }],
       },
       {
-        name: 'audditState',
+        name: 'checkStatus',
         label: '审核状态',
-        initialValue: '',
+        initialValue: 1,
         options: [{ value: 1, text: '全部' }, { value: 2, text: '待审' }, { value: 3, text: '拒绝' }, { value: 4, text: '通过' }],
       },
       {
-        name: 'publishState',
+        name: 'mediaType',
         label: '广告类别',
-        initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '1', text: '公益' }, { value: '2', text: '商业' }],
+        initialValue: '全部',
+        options: [{ value: '全部', text: '全部' }, { value: '公益', text: '公益' }, { value: '商业', text: '商业' }],
       },
     ]
 
@@ -129,15 +131,15 @@ class AdList extends Component {
     const dataSource = (list || []).map(i => ({
       id: i.id,
       key: i.id,
-      createDate: i.createDate,
-      title: i.title,
-      videoTitle: i.videoTitle,
-      dcpTitle: i.dcpTitle,
-      channelNum: i.channelNum,
-      dcpSource: i.dcpSource,
-      adState: i.adState,
+      createDate: i.createTime,
+      title: i.mediaName,
+      videoTitle: i.originalName,
+      dcpTitle: i.dcpName,
+      channelNum: i.dcpCount,
+      dcpSource: i.source,
+      adState: i.state,
       type: i.type,
-      state: i.state,
+      state: i.checkState,
     }));
 
     const columns = [

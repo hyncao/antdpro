@@ -29,19 +29,21 @@ export default {
         },
       });
       const res = yield call(getList, payload);
-      const result = {
-        list: res.list,
-        paginationOption: {
-          current: payload.pageNum,
-          total: res.total,
-        },
-        tableLoading: false,
-        reloadFlag: false,
-      };
-      yield put({
-        type: 'save',
-        payload: result,
-      });
+      if (res.code === 200) {
+        const result = {
+          list: res.data.list,
+          paginationOption: {
+            current: payload.pageNum,
+            total: res.size,
+          },
+          tableLoading: false,
+          reloadFlag: false,
+        };
+        yield put({
+          type: 'save',
+          payload: result,
+        });
+      }
     },
   },
 
