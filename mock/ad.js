@@ -1,7 +1,7 @@
 import { delay } from '@/utils/utils';
 
 export default {
-  'POST /api/ad/queryAdlist': async (req, res) => {
+  'POST /api/ad/queryAdList': async (req, res) => {
     await delay(2000);
     res.send({
       code: 200,

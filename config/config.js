@@ -125,7 +125,7 @@ export default {
   chainWebpack: webpackPlugin,
   proxy: {
     '/api/': {
-      target: 'https://preview.pro.ant.design/',
+      target: 'http://114.67.233.232:8020',
       changeOrigin: true,
       pathRewrite: { '/api': '' },
     },

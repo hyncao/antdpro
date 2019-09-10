@@ -31,7 +31,7 @@ class CheckboxAll extends Component {
     });
   }
 
-  onChange(checkedList) {
+  onChange(checkedList = []) {
     const { options, name, form: { setFieldsValue } } = this.props;
     setFieldsValue({
       [name]: checkedList,

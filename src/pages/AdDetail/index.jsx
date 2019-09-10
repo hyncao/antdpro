@@ -326,9 +326,9 @@ class AdDetail extends Component {
                     label="宽幅通道"
                     initialValue={detail.wideChannel}
                     options={[
-                      { label: 'S_JPEG2K(进口宽银幕)', value: 'S_JPEG2K' },
-                      { label: 'S_3D(3D宽银幕)', value: 'S_3D' },
-                      { label: 'S_MPEG2(国产宽银幕)', value: 'S_MPEG2' },
+                      { label: 'S_JPEG2K(进口宽银幕)', value: 1 },
+                      { label: 'S_3D(3D宽银幕)', value: 16 },
+                      { label: 'S_MPEG2(国产宽银幕)', value: 4 },
                     ]}
                   />
                   <CheckboxAll
@@ -337,9 +337,9 @@ class AdDetail extends Component {
                     label="遮幅通道"
                     initialValue={detail.blockChannel}
                     options={[
-                      { label: 'F_JPEG2K（进口遮福）', value: 'F_JPEG2K' },
-                      { label: 'F_3D(3D遮幅)', value: 'F_3D' },
-                      { label: 'F_MPEG2(国产遮幅)', value: 'F_MPEG2' },
+                      { label: 'F_JPEG2K(进口遮福)', value: 2 },
+                      { label: 'F_3D(3D遮幅)', value: 32 },
+                      { label: 'F_MPEG2(国产遮幅)', value: 8 },
                     ]}
                   />
                   <CheckboxIpt

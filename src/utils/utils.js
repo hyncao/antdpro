@@ -1,3 +1,5 @@
+import request from '@/utils/request';
+
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const urlReg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
 
@@ -12,7 +14,9 @@ export const isAntDesignPro = () => {
 }; // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 
 export const isAntDesignProOrDev = () => {
-  const { NODE_ENV } = process.env;
+  const {
+    NODE_ENV
+  } = process.env;
 
   if (NODE_ENV === 'development') {
     return true;
@@ -58,3 +62,10 @@ export const getUrlQuery = name => {
   if (result) return result;
   return '';
 };
+
+export const ajax = (url, data) => request(url, {
+  ...data,
+  headers: {
+    Authorization: 'token',
+  },
+});

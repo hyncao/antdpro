@@ -31,9 +31,10 @@ class Login extends Component {
         }
         const { dispatch } = this.props;
         const result = await dispatch({
-          type: 'userLogin/login',
+          type: 'user/login',
           payload: values,
         });
+        setLS('currentUser', JSON.stringify({ ...values, currentAuthority: result.currentAuthority }))
         if (result.status === 'error') {
           this.setState({ text: '用户名或密码错误，应为admin，123' });
         } else {

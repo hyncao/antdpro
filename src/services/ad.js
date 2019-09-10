@@ -1,21 +1,21 @@
-import request from '@/utils/request';
+import { ajax } from '@/utils/utils';
 
 export function getList(data) {
-  return request('/api/ad/queryAdlist', {
+  return ajax('/api/ad/queryAdList', {
     method: 'POST',
     data,
   });
 }
 
 export function saveDetail(data) {
-  return request('/api/ad/save', {
+  return ajax('/api/ad/save', {
     method: 'POST',
     data,
   });
 }
 
 export function getDetail(data) {
-  return request('/ad/detail', {
+  return ajax('/ad/detail', {
     method: 'POST',
     data,
   });
