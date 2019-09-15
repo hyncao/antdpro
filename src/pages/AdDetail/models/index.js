@@ -1,6 +1,7 @@
 import {
   saveDetail,
   getDetail,
+  getVideoList,
 } from '@/services/ad';
 
 export default {
@@ -9,6 +10,7 @@ export default {
   state: {
     submitLoading: false,
     adDetailLoading: false,
+    videoList: [],
   },
 
   effects: {
@@ -48,6 +50,23 @@ export default {
         },
       });
       return res;
+    },
+
+    * getVideoList({
+      payload,
+    }, {
+      call,
+      put,
+    }) {
+      const res = yield call(getVideoList, payload);
+      if (res.code === 200) {
+        yield put({
+          type: 'save',
+          payload: {
+            videoList: res.data,
+          },
+        })
+      }
     },
   },
 

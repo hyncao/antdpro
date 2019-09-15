@@ -1,12 +1,13 @@
-import { delay } from '@/utils/utils';
+import {
+  delay,
+} from '@/utils/utils';
 
 export default {
   'POST /api/ad/queryAdList': async (req, res) => {
     await delay(2000);
     res.send({
       code: 200,
-      list: [
-        {
+      list: [{
           id: '1',
           createDate: '2019-07-24',
           title: '广告1',
@@ -55,7 +56,7 @@ export default {
     });
   },
 
-  'POST /ad/upload': async (req, res) => {
+  'POST /api/ad/upload': async (req, res) => {
     await delay(2000);
     res.send({
       code: 200,
@@ -65,11 +66,16 @@ export default {
 
   'POST /ad/detail': async (req, res) => {
     await delay(2000);
-    const { id } = req.body;
+    const {
+      id,
+    } = req.body;
     const data = {
       adTitle: `广告${id}`,
       attribute: id,
-      chooseCustom: { name: `客户${id}`, id },
+      chooseCustom: {
+        name: `客户${id}`,
+        id,
+      },
       file: {
         id,
         name: `视频${id}`,
@@ -85,5 +91,33 @@ export default {
       code: 200,
       data,
     })
+  },
+
+  'POST /api/ad/queryCustomerList': async (req, res) => {
+    await delay(2000);
+    res.send({
+      code: 200,
+      list: [{
+          id: '1',
+          name: '客户1',
+        },
+        {
+          id: '2',
+          name: '客户2',
+        },
+        {
+          id: '3',
+          name: '客户3',
+        },
+        {
+          id: '4',
+          name: '客户4',
+        },
+        {
+          id: '5',
+          name: '客户5',
+        },
+      ],
+    });
   },
 };

@@ -49,7 +49,7 @@ class ModalChooseCustomer extends Component {
   render() {
     const { customer: { modalVisible, list, loading } } = this.props;
     const { value } = this.state;
-    const radioList = list.map(i => ({ label: i.name, value: i.id }));
+    const radioList = list.map(i => ({ label: i.customerFullName, value: i.id }));
     return (
       <Modal
         title="请选择客户"

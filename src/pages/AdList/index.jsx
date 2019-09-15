@@ -33,7 +33,10 @@ class AdList extends Component {
         const timeObj = createDate && createDate.length === 2 ? {
           startTime: createDate && createDate[0].format('YYYY-MM-DD'),
           endTime: createDate && createDate[1].format('YYYY-MM-DD'),
-        } : {};
+        } : {
+          startTime: '',
+          endTime: '',
+        };
         const data = {
           ...values, ...timeObj,
         };
@@ -77,51 +80,57 @@ class AdList extends Component {
       {
         name: 'createDate',
         label: '添加日期',
+        initialValue: [],
         component: <RangePicker className={styles.ranger} />,
       },
       {
         name: 'mediaName',
         label: '广告名称',
+        initialValue: '',
         maxLength: 16,
       },
       {
         name: 'customerName',
         label: '视频所属',
         maxLength: 16,
+        initialValue: '',
         authLimit: 'admin',
       },
       {
-        name: 'orginalName',
+        name: 'originalName',
         label: '视频名称',
+        initialValue: '',
         maxLength: 32,
       },
       {
         name: 'dcpName',
         label: 'DCP名称',
+        initialValue: '',
         maxLength: 32,
       },
       {
         name: 'source',
         label: 'DCP来源',
+        initialValue: '',
         maxLength: 32,
       },
       {
         name: 'mediaState',
         label: '广告状态',
-        initialValue: '全部',
-        options: [{ value: '全部', text: '全部' }, { value: '转码中', text: '转码中' }, { value: '转码完成', text: '转码完成' }],
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: '转码中', text: '转码中' }, { value: '转码完成', text: '转码完成' }],
       },
       {
         name: 'checkStatus',
         label: '审核状态',
-        initialValue: 1,
-        options: [{ value: 1, text: '全部' }, { value: 2, text: '待审' }, { value: 3, text: '拒绝' }, { value: 4, text: '通过' }],
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: 2, text: '待审' }, { value: 3, text: '拒绝' }, { value: 4, text: '通过' }],
       },
       {
         name: 'mediaType',
         label: '广告类别',
-        initialValue: '全部',
-        options: [{ value: '全部', text: '全部' }, { value: '公益', text: '公益' }, { value: '商业', text: '商业' }],
+        initialValue: '',
+        options: [{ value: '', text: '全部' }, { value: '公益', text: '公益' }, { value: '商业', text: '商业' }],
       },
     ]
 

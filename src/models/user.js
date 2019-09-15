@@ -7,7 +7,10 @@ import {
 const UserModel = {
   namespace: 'user',
   state: {
-    currentUser: {},
+    currentUser: {
+      currentAuthority: 'admin',
+      userId: 1,
+    },
   },
   effects: {
     * fetch(_, {

@@ -20,3 +20,17 @@ export function getDetail(data) {
     data,
   });
 }
+
+export function getCustomerList(data) {
+  return ajax('/api/ad/queryCustomerList', {
+    method: 'POST',
+    data,
+  });
+}
+
+export function getVideoList(data) {
+  return ajax('/api/ad/list', {
+    method: 'POST',
+    data,
+  })
+}
