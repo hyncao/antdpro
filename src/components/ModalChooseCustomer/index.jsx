@@ -25,7 +25,7 @@ class ModalChooseCustomer extends Component {
   handleOk() {
     const { value } = this.state;
     const { handleChoose, customer: { list } } = this.props;
-    const [chooseCustom] = list.filter(i => i.id === value);
+    const [chooseCustom] = list.filter(i => i.customerCode === value);
     handleChoose(chooseCustom);
     this.handleCancel();
   }
@@ -49,7 +49,7 @@ class ModalChooseCustomer extends Component {
   render() {
     const { customer: { modalVisible, list, loading } } = this.props;
     const { value } = this.state;
-    const radioList = list.map(i => ({ label: i.customerFullName, value: i.id }));
+    const radioList = list.map(i => ({ label: i.customerFullName, value: i.customerCode }));
     return (
       <Modal
         title="请选择客户"

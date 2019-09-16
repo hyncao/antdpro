@@ -15,7 +15,7 @@ export function saveDetail(data) {
 }
 
 export function getDetail(data) {
-  return ajax('/ad/detail', {
+  return ajax('/api/ad/detail', {
     method: 'POST',
     data,
   });
@@ -32,5 +32,5 @@ export function getVideoList(data) {
   return ajax('/api/ad/list', {
     method: 'POST',
     data,
-  })
+  });
 }

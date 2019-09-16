@@ -7,6 +7,7 @@ import {
   BlankLine, AuthWrap, ModalChooseCustomer, CheckboxAll, CheckboxIpt,
 } from '@/components/index.jsx';
 import { getUrlQuery } from '@/utils/utils';
+import { cashReg } from '@/utils/reg';
 import styles from './index.less';
 
 const { Item } = Form;
@@ -27,6 +28,7 @@ class AdDetail extends Component {
     }
 
     this.getDetail = this.getDetail.bind(this);
+    this.getVideoList = this.getVideoList.bind(this);
     this.chooseCustomer = this.chooseCustomer.bind(this);
     this.submit = this.submit.bind(this);
     this.submitAudit = this.submitAudit.bind(this);
@@ -36,6 +38,7 @@ class AdDetail extends Component {
     this.beforeUpload = this.beforeUpload.bind(this);
     this.handleUpload = this.handleUpload.bind(this);
     this.preview = this.preview.bind(this);
+    this.checkVideoList = this.checkVideoList.bind(this);
     this.closeAlert = this.closeAlert.bind(this);
     this.checkCustomer = this.checkCustomer.bind(this);
   }
@@ -129,6 +132,7 @@ class AdDetail extends Component {
     })
     this.getVideoList(chooseCustom.id);
     this.setState({ chooseCustom })
+    this.getVideoList(chooseCustom.id);
   }
 
   handleVideoRadio(e) {
@@ -136,9 +140,18 @@ class AdDetail extends Component {
     this.setState({ videoRadio }, this.checkCustomer);
   }
 
-  beforeUpload({ size, type }) {
+  beforeUpload({ size, name }) {
+    const arr = ['avi', 'mp4', 'mov', 'mpg', 'mpeg', 'm2ts', 'wmv', 'mkv'];
+    const type = name.split('.')[name.split('.').length - 1];
     console.log(size);
-    console.log(type);
+    console.log(name);
+    if (!arr.includes(type)) {
+      notification.error({
+        message: '请上传avi,mp4,mov,mpg,mpeg,m2ts,wmv,mkv格式的文件',
+      });
+      return false;
+    }
+    return true;
   }
 
   handleUpload(data) {
@@ -158,6 +171,7 @@ class AdDetail extends Component {
           setTimeout(() => {
             setFieldsValue({ mediaFileUpload: '' })
           }, 0);
+          setFieldsValue({ mediaFileId: '' });
           notification.error({
             message: response.msg,
           });
@@ -188,6 +202,18 @@ class AdDetail extends Component {
       return;
     }
     history.push('/ad/preview');
+  }
+
+  checkVideoList() {
+    const { chooseCustom, videoRadio } = this.state;
+    if (videoRadio === 'choose') {
+      if (!chooseCustom.id) {
+        notification.error({
+          message: '请选择所属客户',
+          description: '视频选择需要根据所属客户来确定',
+        });
+      }
+    }
   }
 
   closeAlert() {
@@ -280,8 +306,8 @@ class AdDetail extends Component {
                 )}
               </Item>
               <Item label="所属客户">
-                {getFieldDecorator('customer', {
-                  initialValue: detail.customer,
+                {getFieldDecorator('customerId', {
+                  initialValue: detail.customerId,
                   rules: [
                     { required: true, message: '请选择所属客户' },
                   ],
@@ -306,7 +332,7 @@ class AdDetail extends Component {
                 <>
                   {getFieldDecorator('mediaFileId', {
                     initialValue: detail.mediaFileId,
-                  })(<input type="hidden" />)}
+                  })(<Input type="hidden" />)}
                   <Item label="选择文件">
                     {getFieldDecorator('mediaFileUpload', {
                       initialValue: '',
@@ -320,6 +346,7 @@ class AdDetail extends Component {
                         fileList={fileList}
                         disabled={uploadDisabled}
                         onChange={this.handleUpload}
+                        accept=".avi,.mp4,.mov,.mpg,.mpeg,.m2ts,.wmv,.mkv"
                       >
                         <Button>
                           <Icon type="upload" /> 选择文件
@@ -397,17 +424,17 @@ class AdDetail extends Component {
                   <CheckboxIpt
                     name="cutStart"
                     form={form}
-                    label="开头裁剪"
+                    label="开头裁剪(秒)"
                     initialValue={detail.cutStart}
-                    pattern={/^[1-9]\d*$/}
+                    pattern={cashReg}
                     message="开头裁剪格式有误"
                   />
                   <CheckboxIpt
                     name="cutEnd"
                     form={form}
-                    label="结尾裁剪"
+                    label="结尾裁剪(秒)"
                     initialValue={detail.cutEnd}
-                    pattern={/^[1-9]\d*$/}
+                    pattern={cashReg}
                     message="结尾裁剪格式有误"
                   />
                 </Card>

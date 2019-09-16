@@ -63,9 +63,18 @@ export const getUrlQuery = name => {
   return '';
 };
 
-export const ajax = (url, data) => request(url, {
-  ...data,
-  headers: {
+export const ajax = (url, data) => {
+  let headers = {
     Authorization: 'token',
-  },
-});
+  };
+  if (data.headers) {
+    headers = {
+      ...data.headers,
+      Authorization: 'token',
+    }
+  }
+  return request(url, {
+    ...data,
+    headers,
+  });
+};

@@ -64,7 +64,7 @@ export default {
     })
   },
 
-  'POST /ad/detail': async (req, res) => {
+  'POST /api/ad/detail': async (req, res) => {
     await delay(2000);
     const {
       id,
