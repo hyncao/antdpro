@@ -97,11 +97,13 @@ class AdDetail extends Component {
     validateFields(async (err, values) => {
       if (!err) {
         const { user: { currentUser: { userId } } } = this.props;
+        const { wideChannel, blindChannel } = values;
         const data = {
           ...values,
           userId,
+          wideChannel: wideChannel.length === 3 ? 0 : wideChannel.join(),
+          blindChannel: blindChannel.length === 3 ? 0 : blindChannel.join(),
         }
-        console.log(data);
         const res = await dispatch({
           type: 'adDetail/saveDetail',
           payload: data,

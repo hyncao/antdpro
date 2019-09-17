@@ -8,7 +8,7 @@ export function getList(data) {
 }
 
 export function saveDetail(data) {
-  return ajax('/api/ad/save', {
+  return ajax('/api/ad/add', {
     method: 'POST',
     data,
   });
