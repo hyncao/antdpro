@@ -57,7 +57,7 @@ class AdDetail extends Component {
     const { dispatch } = this.props;
     const res = await dispatch({
       type: 'adDetail/getDetail',
-      payload: { AID: id },
+      payload: { aId: id - 0 },
     });
     const { data, data: { file, chooseCustom } } = res;
     if (file.id) {

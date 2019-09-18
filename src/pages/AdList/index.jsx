@@ -19,6 +19,8 @@ class AdList extends Component {
     this.tableSearch = this.tableSearch.bind(this);
     this.handleReset = this.handleReset.bind(this);
     this.addContract = this.addContract.bind(this);
+    this.put = this.put.bind(this);
+    this.audit = this.audit.bind(this);
   }
 
   componentDidMount() {
@@ -34,9 +36,9 @@ class AdList extends Component {
           startTime: createDate && createDate[0].format('YYYY-MM-DD'),
           endTime: createDate && createDate[1].format('YYYY-MM-DD'),
         } : {
-          startTime: '',
-          endTime: '',
-        };
+            startTime: '',
+            endTime: '',
+          };
         const data = {
           ...values, ...timeObj,
         };
@@ -64,6 +66,14 @@ class AdList extends Component {
       type: 'adList/controlModal',
       payload: { modalVisible: true },
     });
+  }
+
+  put(id) {
+    console.log(id)
+  }
+
+  audit(id) {
+    console.log(id)
   }
 
   render() {
@@ -201,7 +211,14 @@ class AdList extends Component {
         title: '操作',
         dataIndex: 'operate',
         key: 'operate',
-        render: (text, record) => <Link to={`/ad/detail?id=${record.id}`}>详情</Link>,
+        render: (text, record) => (
+          <>
+            <Link to={`/ad/detail?id=${record.id}`}>详情</Link>
+            <Link to={`/ad/detail?id=${record.id}`}>修改</Link>
+            <a onClick={() => this.put(record.id)}>投放</a>
+            <a onClick={() => this.audit(record.id)}>提交审核</a>
+          </>
+        ),
       },
     ];
 
