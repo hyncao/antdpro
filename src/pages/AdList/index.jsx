@@ -134,7 +134,7 @@ class AdList extends Component {
       },
     ]
 
-    const bonusBtn = [{ id: '1', btn: <Link to="/ad/detail"><Button type="primary">新增合同</Button></Link> }];
+    const bonusBtn = [{ id: '1', btn: <Link to="/ad/detail"><Button type="primary">新增广告</Button></Link> }];
 
     // 设置映射关系
     const dataSource = (list || []).map(i => ({

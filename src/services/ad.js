@@ -15,7 +15,7 @@ export function saveDetail(data) {
 }
 
 export function getDetail(data) {
-  return ajax('/api/ad/detail', {
+  return ajax('/api/ad/queryAdDetail', {
     method: 'POST',
     data,
   });

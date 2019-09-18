@@ -32,6 +32,7 @@ class AdDetail extends Component {
     this.chooseCustomer = this.chooseCustomer.bind(this);
     this.submit = this.submit.bind(this);
     this.submitAudit = this.submitAudit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
     this.chooseBack = this.chooseBack.bind(this);
     this.getVideoList = this.getVideoList.bind(this);
     this.handleVideoRadio = this.handleVideoRadio.bind(this);
@@ -56,7 +57,7 @@ class AdDetail extends Component {
     const { dispatch } = this.props;
     const res = await dispatch({
       type: 'adDetail/getDetail',
-      payload: { id },
+      payload: { AID: id },
     });
     const { data, data: { file, chooseCustom } } = res;
     if (file.id) {
@@ -92,8 +93,15 @@ class AdDetail extends Component {
 
   submit(e) {
     e.preventDefault();
-    const { dispatch, form: { validateFields, getFieldValue } } = this.props;
-    console.log(getFieldValue('mediaFileUpload'))
+    this.handleSubmit();
+  }
+
+  submitAudit() {
+    this.handleSubmit('yes');
+  }
+
+  handleSubmit(auditing = 'no') {
+    const { dispatch, form: { validateFields } } = this.props;
     validateFields(async (err, values) => {
       if (!err) {
         const { user: { currentUser: { userId } } } = this.props;
@@ -101,6 +109,7 @@ class AdDetail extends Component {
         const data = {
           ...values,
           userId,
+          auditing,
           wideChannel: wideChannel.length === 3 ? 0 : wideChannel.join(),
           blindChannel: blindChannel.length === 3 ? 0 : blindChannel.join(),
         }
@@ -108,20 +117,10 @@ class AdDetail extends Component {
           type: 'adDetail/saveDetail',
           payload: data,
         })
-        console.log(res);
-      }
-    })
-  }
-
-  submitAudit() {
-    const { dispatch, form: { validateFields } } = this.props;
-    validateFields(async (err, values) => {
-      if (!err) {
-        const res = await dispatch({
-          type: 'adDetail/saveDetail',
-          payload: values,
-        })
-        console.log(res);
+        if (res && res.code === 200) {
+          const { history } = this.props;
+          history.push('/ad/list');
+        }
       }
     })
   }
@@ -134,7 +133,6 @@ class AdDetail extends Component {
     })
     this.getVideoList(chooseCustom.id);
     this.setState({ chooseCustom })
-    this.getVideoList(chooseCustom.id);
   }
 
   handleVideoRadio(e) {
@@ -303,7 +301,7 @@ class AdDetail extends Component {
             </Item>
             <AuthWrap authLimit="admin">
               <Item style={{ display: 'none' }}>
-                {getFieldDecorator('customerId', {})(
+                {getFieldDecorator('customer', {})(
                   <Input type="hidden" />,
                 )}
               </Item>
@@ -371,7 +369,7 @@ class AdDetail extends Component {
                       ],
                     })(
                       <Select placeholder="请选择">
-                        {videoList.length > 1 && videoList.map(i => (
+                        {videoList.length > 1 && videoList.filter(i => i).map(i => (
                           <Option key={i.id} value={i.id}>{i.originalName}</Option>
                         ))}
                       </Select>,

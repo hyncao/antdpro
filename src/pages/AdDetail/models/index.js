@@ -27,6 +27,12 @@ export default {
         },
       });
       const res = yield call(saveDetail, payload);
+      yield put({
+        type: 'save',
+        payload: {
+          submitLoading: false,
+        },
+      });
       return res;
     },
 
