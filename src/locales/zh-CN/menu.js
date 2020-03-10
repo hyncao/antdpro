@@ -52,4 +52,7 @@ export default {
   'menu.ad': '广告管理',
   'menu.ad.list': '广告列表',
   'menu.ad.detail': '广告详情',
+  'menu.market': '营销配置',
+  'menu.market.couponList': '红包卡券管理',
+  'menu.market.couponDetail': '红包卡券编辑',
 };

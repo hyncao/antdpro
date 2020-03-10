@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import {
-  Form, DatePicker, Button, Table,
-} from 'antd';
+import { Form, DatePicker, Button, Table } from 'antd';
 import { BlankLine, SearchBox } from '@/components/index.jsx';
 import styles from './index.less';
 
@@ -32,15 +30,19 @@ class AdList extends Component {
     form.validateFields((err, values) => {
       if (!err) {
         const { createDate } = values;
-        const timeObj = createDate && createDate.length === 2 ? {
-          startTime: createDate && createDate[0].format('YYYY-MM-DD'),
-          endTime: createDate && createDate[1].format('YYYY-MM-DD'),
-        } : {
-            startTime: '',
-            endTime: '',
-          };
+        const timeObj =
+          createDate && createDate.length === 2
+            ? {
+                startTime: createDate && createDate[0].format('YYYY-MM-DD'),
+                endTime: createDate && createDate[1].format('YYYY-MM-DD'),
+              }
+            : {
+                startTime: '',
+                endTime: '',
+              };
         const data = {
-          ...values, ...timeObj,
+          ...values,
+          ...timeObj,
         };
         dispatch({
           type: 'adList/list',
@@ -56,7 +58,9 @@ class AdList extends Component {
   }
 
   handleReset() {
-    const { form: { resetFields } } = this.props;
+    const {
+      form: { resetFields },
+    } = this.props;
     resetFields();
   }
 
@@ -69,19 +73,17 @@ class AdList extends Component {
   }
 
   put(id) {
-    console.log(id)
+    console.log(id);
   }
 
   audit(id) {
-    console.log(id)
+    console.log(id);
   }
 
   render() {
     const {
       form,
-      adList: {
-        tableLoading, list, paginationOption,
-      },
+      adList: { tableLoading, list, paginationOption },
     } = this.props;
     paginationOption.onChange = this.getList;
     paginationOption.onShowSizeChange = this.getList;
@@ -128,23 +130,45 @@ class AdList extends Component {
         name: 'mediaState',
         label: '广告状态',
         initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '转码中', text: '转码中' }, { value: '转码完成', text: '转码完成' }],
+        options: [
+          { value: '', text: '全部' },
+          { value: '转码中', text: '转码中' },
+          { value: '转码完成', text: '转码完成' },
+        ],
       },
       {
         name: 'checkStatus',
         label: '审核状态',
         initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: 2, text: '待审' }, { value: 3, text: '拒绝' }, { value: 4, text: '通过' }],
+        options: [
+          { value: '', text: '全部' },
+          { value: 2, text: '待审' },
+          { value: 3, text: '拒绝' },
+          { value: 4, text: '通过' },
+        ],
       },
       {
         name: 'mediaType',
         label: '广告类别',
         initialValue: '',
-        options: [{ value: '', text: '全部' }, { value: '公益', text: '公益' }, { value: '商业', text: '商业' }],
+        options: [
+          { value: '', text: '全部' },
+          { value: '公益', text: '公益' },
+          { value: '商业', text: '商业' },
+        ],
       },
-    ]
+    ];
 
-    const bonusBtn = [{ id: '1', btn: <Link to="/ad/detail"><Button type="primary">新增广告</Button></Link> }];
+    const bonusBtn = [
+      {
+        id: '1',
+        btn: (
+          <Link to="/ad/detail">
+            <Button type="primary">新增广告</Button>
+          </Link>
+        ),
+      },
+    ];
 
     // 设置映射关系
     const dataSource = (list || []).map(i => ({

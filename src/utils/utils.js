@@ -14,9 +14,7 @@ export const isAntDesignPro = () => {
 }; // 给官方演示站点用，用于关闭真实开发环境不需要使用的特性
 
 export const isAntDesignProOrDev = () => {
-  const {
-    NODE_ENV
-  } = process.env;
+  const { NODE_ENV } = process.env;
 
   if (NODE_ENV === 'development') {
     return true;
@@ -55,7 +53,7 @@ export const getUrlQuery = name => {
   for (let i = 0; i < query.length; i += 1) {
     if (query[i].indexOf(`${name}=`) > -1) {
       const arr = query[i].split(`${name}=`);
-      ([, result] = arr);
+      [, result] = arr;
       break;
     }
   }
@@ -71,7 +69,7 @@ export const ajax = (url, data) => {
     headers = {
       ...data.headers,
       Authorization: 'token',
-    }
+    };
   }
   return request(url, {
     ...data,

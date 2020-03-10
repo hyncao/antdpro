@@ -1,6 +1,4 @@
-import {
-  getList,
-} from '@/services/ad';
+import { getList } from '@/services/ad';
 
 export default {
   namespace: 'adList',
@@ -16,12 +14,7 @@ export default {
   },
 
   effects: {
-    * list({
-      payload,
-    }, {
-      call,
-      put,
-    }) {
+    *list({ payload }, { call, put }) {
       yield put({
         type: 'save',
         payload: {

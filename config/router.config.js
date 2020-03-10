@@ -41,7 +41,7 @@ export default [
           {
             component: './404',
           },
-        ]
+        ],
       },
       {
         path: '/contract',
@@ -56,7 +56,27 @@ export default [
           {
             component: './404',
           },
-        ]
+        ],
+      },
+      {
+        path: '/market',
+        name: 'market',
+        icon: 'pie-chart',
+        routes: [
+          {
+            path: '/market/couponList',
+            name: 'couponList',
+            component: './CouponList',
+          },
+          // {
+          //   path: '/market/couponDetail',
+          //   name: 'couponDetail',
+          //   component: './CouponDetail',
+          // },
+          {
+            component: './404',
+          },
+        ],
       },
       {
         path: '/',
@@ -65,6 +85,6 @@ export default [
       {
         component: './404',
       },
-    ]
+    ],
   },
-]
+];

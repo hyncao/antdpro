@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  Form, Icon, Input, Button, Checkbox, Alert,
-} from 'antd';
+import { Form, Icon, Input, Button, Checkbox, Alert } from 'antd';
 import { connect } from 'dva';
 import { getLS, setLS, removeLS } from '../../utils/utils';
 import styles from './index.less';
@@ -20,7 +18,9 @@ class Login extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    const { form: { validateFields, getFieldValue } } = this.props;
+    const {
+      form: { validateFields, getFieldValue },
+    } = this.props;
     validateFields(async (err, values) => {
       if (!err) {
         const remember = getFieldValue('remember');
@@ -34,11 +34,11 @@ class Login extends Component {
           type: 'user/login',
           payload: values,
         });
-        setLS('currentUser', JSON.stringify({ ...values, currentAuthority: result.currentAuthority }))
         if (result.status === 'error') {
           this.setState({ text: '用户名或密码错误，应为admin，123' });
         } else {
           const { history } = this.props;
+          setLS('authority', result.currentAuthority);
           history.push('/ad/list');
         }
       }
@@ -46,7 +46,9 @@ class Login extends Component {
   };
 
   rememberMe() {
-    const { form: { getFieldValue } } = this.props;
+    const {
+      form: { getFieldValue },
+    } = this.props;
     const userName = getFieldValue('userName');
     const password = getFieldValue('password');
     setLS('adUserName', userName);
@@ -60,7 +62,9 @@ class Login extends Component {
 
   render() {
     const { text } = this.state;
-    const { form: { getFieldDecorator } } = this.props;
+    const {
+      form: { getFieldDecorator },
+    } = this.props;
     return (
       <Form onSubmit={this.handleSubmit} className={styles.box}>
         {text && <Alert message={text} type="info" showIcon />}
@@ -92,7 +96,9 @@ class Login extends Component {
             valuePropName: 'checked',
             initialValue: true,
           })(<Checkbox>Remember me</Checkbox>)}
-          <Button type="primary" htmlType="submit" className={styles.btn}>Log in</Button>
+          <Button type="primary" htmlType="submit" className={styles.btn}>
+            Log in
+          </Button>
         </Form.Item>
       </Form>
     );

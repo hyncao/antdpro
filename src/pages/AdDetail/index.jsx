@@ -1,10 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'dva';
 import {
-  Form, Card, Input, Select, Radio, Upload, Icon, Button, Alert, Spin, notification,
+  Form,
+  Card,
+  Input,
+  Select,
+  Radio,
+  Upload,
+  Icon,
+  Button,
+  Alert,
+  Spin,
+  notification,
 } from 'antd';
 import {
-  BlankLine, AuthWrap, ModalChooseCustomer, CheckboxAll, CheckboxIpt,
+  BlankLine,
+  AuthWrap,
+  ModalChooseCustomer,
+  CheckboxAll,
+  CheckboxIpt,
 } from '@/components/index.jsx';
 import { getUrlQuery } from '@/utils/utils';
 import { cashReg } from '@/utils/reg';
@@ -25,7 +39,7 @@ class AdDetail extends Component {
       uploadDisabled: false,
       fileList: [],
       detail: {},
-    }
+    };
 
     this.getDetail = this.getDetail.bind(this);
     this.getVideoList = this.getVideoList.bind(this);
@@ -45,7 +59,9 @@ class AdDetail extends Component {
   }
 
   componentDidMount() {
-    const { form: { resetFields } } = this.props;
+    const {
+      form: { resetFields },
+    } = this.props;
     if (getUrlQuery('id')) {
       this.getDetail(getUrlQuery('id'));
     } else {
@@ -59,7 +75,10 @@ class AdDetail extends Component {
       type: 'adDetail/getDetail',
       payload: { aId: id - 0 },
     });
-    const { data, data: { file, chooseCustom } } = res;
+    const {
+      data,
+      data: { file, chooseCustom },
+    } = res;
     if (file.id) {
       this.setState({
         detail: {
@@ -71,7 +90,7 @@ class AdDetail extends Component {
         },
         videoRadio: 'choose',
         chooseCustom,
-      })
+      });
     }
   }
 
@@ -80,15 +99,20 @@ class AdDetail extends Component {
     dispatch({
       type: 'adDetail/getVideoList',
       payload: { customerId },
-    })
+    });
   }
 
   chooseCustomer() {
-    const { dispatch, user: { currentUser: { userId } } } = this.props;
+    const {
+      dispatch,
+      user: {
+        currentUser: { userId },
+      },
+    } = this.props;
     dispatch({
       type: 'customer/getList',
       payload: { userId },
-    })
+    });
   }
 
   submit(e) {
@@ -101,10 +125,17 @@ class AdDetail extends Component {
   }
 
   handleSubmit(auditing = 'no') {
-    const { dispatch, form: { validateFields } } = this.props;
+    const {
+      dispatch,
+      form: { validateFields },
+    } = this.props;
     validateFields(async (err, values) => {
       if (!err) {
-        const { user: { currentUser: { userId } } } = this.props;
+        const {
+          user: {
+            currentUser: { userId },
+          },
+        } = this.props;
         const { wideChannel, blindChannel } = values;
         const data = {
           ...values,
@@ -112,27 +143,29 @@ class AdDetail extends Component {
           auditing,
           wideChannel: wideChannel.length === 3 ? 0 : wideChannel.join(),
           blindChannel: blindChannel.length === 3 ? 0 : blindChannel.join(),
-        }
+        };
         const res = await dispatch({
           type: 'adDetail/saveDetail',
           payload: data,
-        })
+        });
         if (res && res.code === 200) {
           const { history } = this.props;
           history.push('/ad/list');
         }
       }
-    })
+    });
   }
 
   chooseBack(chooseCustom) {
-    const { form: { setFieldsValue } } = this.props;
+    const {
+      form: { setFieldsValue },
+    } = this.props;
     setFieldsValue({
       customer: chooseCustom.customerFullName,
       customerId: chooseCustom.id,
-    })
+    });
     this.getVideoList(chooseCustom.id);
-    this.setState({ chooseCustom })
+    this.setState({ chooseCustom });
   }
 
   handleVideoRadio(e) {
@@ -143,8 +176,6 @@ class AdDetail extends Component {
   beforeUpload({ size, name }) {
     const arr = ['avi', 'mp4', 'mov', 'mpg', 'mpeg', 'm2ts', 'wmv', 'mkv'];
     const type = name.split('.')[name.split('.').length - 1];
-    console.log(size);
-    console.log(name);
     if (!arr.includes(type)) {
       notification.error({
         message: '请上传avi,mp4,mov,mpg,mpeg,m2ts,wmv,mkv格式的文件',
@@ -157,7 +188,9 @@ class AdDetail extends Component {
   handleUpload(data) {
     const { file } = data;
     const { status } = file;
-    const { form: { setFieldsValue } } = this.props;
+    const {
+      form: { setFieldsValue },
+    } = this.props;
     let fileList = [file];
     if (status === 'uploading') {
       this.setState({ uploadDisabled: true });
@@ -169,7 +202,7 @@ class AdDetail extends Component {
         } else {
           fileList = [];
           setTimeout(() => {
-            setFieldsValue({ mediaFileUpload: '' })
+            setFieldsValue({ mediaFileUpload: '' });
           }, 0);
           setFieldsValue({ mediaFileId: '' });
           notification.error({
@@ -184,7 +217,10 @@ class AdDetail extends Component {
 
   preview() {
     const { videoRadio, uploadDisabled, fileList } = this.state;
-    const { form: { getFieldValue }, history } = this.props;
+    const {
+      form: { getFieldValue },
+      history,
+    } = this.props;
     let alertMessage;
     if (videoRadio === 'new') {
       if (uploadDisabled) {
@@ -252,45 +288,39 @@ class AdDetail extends Component {
           offset: 4,
         },
       },
-    }
+    };
+    const { chooseCustom, videoRadio, uploadDisabled, fileList, alertMessage, detail } = this.state;
     const {
-      chooseCustom, videoRadio, uploadDisabled, fileList, alertMessage, detail,
-    } = this.state;
-    const {
-      form, history,
+      form,
+      history,
       form: { getFieldDecorator, getFieldValue },
       adDetail: { adDetailLoading, submitLoading, videoList },
     } = this.props;
 
     if (adDetailLoading) {
-      return <Spin className={styles.spin} tip="加载中……" />
+      return <Spin className={styles.spin} tip="加载中……" />;
     }
 
     return (
       <div>
         <BlankLine />
-        {alertMessage && <Alert type="error" message={alertMessage} onClose={this.closeAlert} closable />}
+        {alertMessage && (
+          <Alert type="error" message={alertMessage} onClose={this.closeAlert} closable />
+        )}
         <BlankLine />
         <ModalChooseCustomer handleChoose={this.chooseBack} chooseId={chooseCustom.id} />
         <Form {...formItemLayout}>
-
           <Card title="基础信息" bordered={false}>
             <Item label="广告名称" extra="一般为上刊日期+标识名称组成，如0720兰博基尼">
               {getFieldDecorator('mediaName', {
                 initialValue: detail.mediaName,
-                rules: [
-                  { required: true, message: '请填写广告名称' },
-                ],
-              })(
-                <Input placeholder="请填写广告名称" maxLength={32} />,
-              )}
+                rules: [{ required: true, message: '请填写广告名称' }],
+              })(<Input placeholder="请填写广告名称" maxLength={32} />)}
             </Item>
             <Item label="行业属性">
               {getFieldDecorator('mediaSecondType', {
                 initialValue: detail.mediaSecondType,
-                rules: [
-                  { required: true, message: '请选择行业属性' },
-                ],
+                rules: [{ required: true, message: '请选择行业属性' }],
               })(
                 <Select placeholder="请选择">
                   <Option value="公益">公益</Option>
@@ -299,23 +329,24 @@ class AdDetail extends Component {
                 </Select>,
               )}
             </Item>
-            <AuthWrap authLimit="admin">
-              <Item style={{ display: 'none' }}>
-                {getFieldDecorator('customer', {})(
-                  <Input type="hidden" />,
-                )}
-              </Item>
-              <Item label="所属客户">
-                {getFieldDecorator('customerId', {
-                  initialValue: detail.customerId,
-                  rules: [
-                    { required: true, message: '请选择所属客户' },
-                  ],
-                })(
-                  <Input placeholder="请选择所属客户" readOnly onClick={this.chooseCustomer} />,
-                )}
-              </Item>
-            </AuthWrap>
+            <AuthWrap
+              authLimit="admin"
+              components={() => (
+                <>
+                  <Item style={{ display: 'none' }}>
+                    {getFieldDecorator('customer', {})(<Input type="hidden" />)}
+                  </Item>
+                  <Item label="所属客户">
+                    {getFieldDecorator('customerId', {
+                      initialValue: detail.customerId,
+                      rules: [{ required: true, message: '请选择所属客户' }],
+                    })(
+                      <Input placeholder="请选择所属客户" readOnly onClick={this.chooseCustomer} />,
+                    )}
+                  </Item>
+                </>
+              )}
+            />
           </Card>
 
           <BlankLine />
@@ -324,134 +355,149 @@ class AdDetail extends Component {
             <Item>
               <Radio.Group onChange={this.handleVideoRadio} value={videoRadio}>
                 <Radio.Button value="new">新视频上传</Radio.Button>
-                <Radio.Button value="choose" disabled={uploadDisabled}>从视频列表选择</Radio.Button>
+                <Radio.Button value="choose" disabled={uploadDisabled}>
+                  从视频列表选择
+                </Radio.Button>
               </Radio.Group>
             </Item>
-            {videoRadio === 'new'
-              ? (
-                <>
+            {videoRadio === 'new' ? (
+              <>
+                {getFieldDecorator('mediaFileId', {
+                  initialValue: detail.mediaFileId,
+                })(<Input type="hidden" />)}
+                <Item label="选择文件">
+                  {getFieldDecorator('mediaFileUpload', {
+                    initialValue: '',
+                    rules: [{ required: true, message: '请选择上传文件' }],
+                  })(
+                    <Upload
+                      action="/api/ad/upload"
+                      beforeUpload={this.beforeUpload}
+                      fileList={fileList}
+                      disabled={uploadDisabled}
+                      onChange={this.handleUpload}
+                      accept=".avi,.mp4,.mov,.mpg,.mpeg,.m2ts,.wmv,.mkv"
+                    >
+                      <Button>
+                        <Icon type="upload" /> 选择文件
+                      </Button>
+                    </Upload>,
+                  )}
+                </Item>
+                {fileList.length > 0 && (
+                  <p>文件大小：{(fileList[0].size / 1024 / 1024).toFixed(2)}M</p>
+                )}
+              </>
+            ) : (
+              <div onClick={this.checkCustomer}>
+                <Item label="视频选择">
                   {getFieldDecorator('mediaFileId', {
                     initialValue: detail.mediaFileId,
-                  })(<Input type="hidden" />)}
-                  <Item label="选择文件">
-                    {getFieldDecorator('mediaFileUpload', {
-                      initialValue: '',
-                      rules: [
-                        { required: true, message: '请选择上传文件' },
-                      ],
-                    })(
-                      <Upload
-                        action="/api/ad/upload"
-                        beforeUpload={this.beforeUpload}
-                        fileList={fileList}
-                        disabled={uploadDisabled}
-                        onChange={this.handleUpload}
-                        accept=".avi,.mp4,.mov,.mpg,.mpeg,.m2ts,.wmv,.mkv"
-                      >
-                        <Button>
-                          <Icon type="upload" /> 选择文件
-                      </Button>
-                      </Upload>,
-                    )}
-                  </Item>
-                  {fileList.length > 0
-                    && <p>文件大小：{(fileList[0].size / 1024 / 1024).toFixed(2)}M</p>
-                  }
-                </>
-              )
-              : (
-                <div onClick={this.checkCustomer}>
-                  <Item label="视频选择">
-                    {getFieldDecorator('mediaFileId', {
-                      initialValue: detail.mediaFileId,
-                      rules: [
-                        { required: true, message: '请选择视频' },
-                      ],
-                    })(
-                      <Select placeholder="请选择">
-                        {videoList.length > 1 && videoList.filter(i => i).map(i => (
-                          <Option key={i.id} value={i.id}>{i.originalName}</Option>
-                        ))}
-                      </Select>,
-                    )}
-                  </Item>
-                </div>
-              )
-            }
+                    rules: [{ required: true, message: '请选择视频' }],
+                  })(
+                    <Select placeholder="请选择">
+                      {videoList.length > 1 &&
+                        videoList
+                          .filter(i => i)
+                          .map(i => (
+                            <Option key={i.id} value={i.id}>
+                              {i.originalName}
+                            </Option>
+                          ))}
+                    </Select>,
+                  )}
+                </Item>
+              </div>
+            )}
             <Item>
-              <Button disabled={uploadDisabled} type="primary" onClick={this.preview}>视频预览</Button>
+              <Button disabled={uploadDisabled} type="primary" onClick={this.preview}>
+                视频预览
+              </Button>
             </Item>
           </Card>
 
-          {getFieldValue('mediaFileId')
-            && (
-              <>
-                <BlankLine />
-                <Card title="转码信息" bordered={false}>
-                  <Item label="转码名称" extra="不支持中文，支持输入数字英文下划线,如0720Lamborghini">
-                    {getFieldDecorator('transcoding', {
-                      initialValue: detail.transcoding,
-                      rules: [
-                        { required: true, message: '请填写转码名称' },
-                        { pattern: /^[0-9a-zA-Z_]*$/, message: '请输入数字英文下划线' },
-                      ],
-                    })(
-                      <Input placeholder="请填写转码名称" maxLength={32} />,
-                    )}
-                  </Item>
-                  <CheckboxAll
-                    name="wideChannel"
-                    form={form}
-                    label="宽幅通道"
-                    initialValue={detail.wideChannel}
-                    options={[
-                      { label: 'S_JPEG2K(进口宽银幕)', value: 1 },
-                      { label: 'S_3D(3D宽银幕)', value: 2 },
-                      { label: 'S_MPEG2(国产宽银幕)', value: 3 },
-                    ]}
-                  />
-                  <CheckboxAll
-                    name="blindChannel"
-                    form={form}
-                    label="遮幅通道"
-                    initialValue={detail.blockChannel}
-                    options={[
-                      { label: 'F_JPEG2K(进口遮福)', value: 1 },
-                      { label: 'F_3D(3D遮幅)', value: 2 },
-                      { label: 'F_MPEG2(国产遮幅)', value: 3 },
-                    ]}
-                  />
-                  <CheckboxIpt
-                    name="cutStart"
-                    form={form}
-                    label="开头裁剪(秒)"
-                    initialValue={detail.cutStart}
-                    pattern={cashReg}
-                    message="开头裁剪格式有误"
-                  />
-                  <CheckboxIpt
-                    name="cutEnd"
-                    form={form}
-                    label="结尾裁剪(秒)"
-                    initialValue={detail.cutEnd}
-                    pattern={cashReg}
-                    message="结尾裁剪格式有误"
-                  />
-                </Card>
-              </>
-            )
-          }
+          {getFieldValue('mediaFileId') && (
+            <>
+              <BlankLine />
+              <Card title="转码信息" bordered={false}>
+                <Item label="转码名称" extra="不支持中文，支持输入数字英文下划线,如0720Lamborghini">
+                  {getFieldDecorator('transcoding', {
+                    initialValue: detail.transcoding,
+                    rules: [
+                      { required: true, message: '请填写转码名称' },
+                      { pattern: /^[0-9a-zA-Z_]*$/, message: '请输入数字英文下划线' },
+                    ],
+                  })(<Input placeholder="请填写转码名称" maxLength={32} />)}
+                </Item>
+                <CheckboxAll
+                  name="wideChannel"
+                  form={form}
+                  label="宽幅通道"
+                  initialValue={detail.wideChannel}
+                  options={[
+                    { label: 'S_JPEG2K(进口宽银幕)', value: 1 },
+                    { label: 'S_3D(3D宽银幕)', value: 2 },
+                    { label: 'S_MPEG2(国产宽银幕)', value: 3 },
+                  ]}
+                />
+                <CheckboxAll
+                  name="blindChannel"
+                  form={form}
+                  label="遮幅通道"
+                  initialValue={detail.blockChannel}
+                  options={[
+                    { label: 'F_JPEG2K(进口遮福)', value: 1 },
+                    { label: 'F_3D(3D遮幅)', value: 2 },
+                    { label: 'F_MPEG2(国产遮幅)', value: 3 },
+                  ]}
+                />
+                <CheckboxIpt
+                  name="cutStart"
+                  form={form}
+                  label="开头裁剪(秒)"
+                  initialValue={detail.cutStart}
+                  pattern={cashReg}
+                  message="开头裁剪格式有误"
+                />
+                <CheckboxIpt
+                  name="cutEnd"
+                  form={form}
+                  label="结尾裁剪(秒)"
+                  initialValue={detail.cutEnd}
+                  pattern={cashReg}
+                  message="结尾裁剪格式有误"
+                />
+              </Card>
+            </>
+          )}
 
           <Card bordered={false}>
             <Item {...btnBoxLayout}>
-              <Button className={styles.btn} type="primary" disabled={uploadDisabled || submitLoading} htmlType="submit" onClick={this.submit}>提交</Button>
-              <Button className={styles.btn} type="primary" disabled={uploadDisabled || submitLoading} onClick={this.submitAudit}>提交并审核</Button>
-              <Button className={styles.btn} type="primary" onClick={history.goBack}>取消</Button>
+              <Button
+                className={styles.btn}
+                type="primary"
+                disabled={uploadDisabled || submitLoading}
+                htmlType="submit"
+                onClick={this.submit}
+              >
+                提交
+              </Button>
+              <Button
+                className={styles.btn}
+                type="primary"
+                disabled={uploadDisabled || submitLoading}
+                onClick={this.submitAudit}
+              >
+                提交并审核
+              </Button>
+              <Button className={styles.btn} type="primary" onClick={history.goBack}>
+                取消
+              </Button>
             </Item>
           </Card>
         </Form>
       </div>
-    )
+    );
   }
 }
 

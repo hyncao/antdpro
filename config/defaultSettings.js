@@ -1,3 +1,4 @@
+// see more: https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 export default {
   navTheme: 'dark',
   primaryColor: '#1890FF',

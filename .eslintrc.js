@@ -7,13 +7,11 @@ module.exports = {
     page: true,
   },
   settings: {
-    "import/resolver": {
-      "alias": {
-        "map": [
-          ["@", "./src"],
-        ],
-      }
-    }
+    'import/resolver': {
+      alias: {
+        map: [['@', './src']],
+      },
+    },
   },
   rules: {
     'eslint-comments/disable-enable-pair': 'off',
@@ -22,5 +20,10 @@ module.exports = {
     'jsx-a11y/no-static-element-interactions': 'off',
     'jsx-a11y/anchor-is-valid': 'off',
     'class-methods-use-this': 'off',
+    'object-curly-newline': 'off',
+    'operator-linebreak': 'off',
+    'generator-star-spacing': 'off',
+    'implicit-arrow-linebreak': 'off',
+    'react/sort-comp': 'off',
   },
 };
