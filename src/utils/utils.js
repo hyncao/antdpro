@@ -1,4 +1,5 @@
 import request from '@/utils/request';
+import { dict } from './constant';
 
 /* eslint no-useless-escape:0 import/prefer-default-export:0 */
 const urlReg = /(((^https?:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+(?::\d+)?|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)$/;
@@ -75,4 +76,42 @@ export const ajax = (url, data) => {
     ...data,
     headers,
   });
+};
+
+export const getOperatorName = operatorCode => dict[operatorCode];
+
+export const dateFormat = date => {
+  if (!date) {
+    return null;
+  }
+  const t = new Date(date);
+
+  function addZero(num) {
+    let temp = num;
+    if (num.toString().length === 1) {
+      temp = `0${num}`;
+    }
+    return temp;
+  }
+  const str = `${t.getFullYear()}-${addZero(t.getMonth() + 1)}-${addZero(t.getDate())}`;
+  return str;
+};
+
+export const timeFormat = date => {
+  if (!date) {
+    return null;
+  }
+  const t = new Date(date);
+
+  function addZero(num) {
+    let temp = num;
+    if (num.toString().length === 1) {
+      temp = `0${num}`;
+    }
+    return temp;
+  }
+  const str = `${t.getFullYear()}-${addZero(t.getMonth() + 1)}-${addZero(t.getDate())} ${addZero(
+    t.getHours(),
+  )}:${addZero(t.getMinutes())}`;
+  return str;
 };

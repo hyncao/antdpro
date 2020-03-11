@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'dva';
 import Link from 'umi/link';
-import { Form, Popconfirm, Button, Table } from 'antd';
-import { BlankLine, SearchBox } from '@/components';
+import { Card, Form, Popconfirm, Button, Table } from 'antd';
+import { BlankLine, SearchBox } from '@/components/index.jsx';
 import { getDataSource, columnsArr } from './config';
 import styles from './index.less';
 
@@ -38,6 +38,7 @@ class CouponList extends React.Component {
     dispatch({
       type: 'couponList/getCouponStatus',
     });
+    this.getList();
   }
 
   async getList(pageNum = 1) {
@@ -66,6 +67,7 @@ class CouponList extends React.Component {
       },
     } = this.props;
 
+    // 定义搜索组件数据组
     const searchArr = [
       {
         name: 'channelIds',
@@ -101,8 +103,26 @@ class CouponList extends React.Component {
       },
     ];
 
+    // 设置接口映射
     const dataSource = getDataSource(list);
+
+    // 设置表格内容渲染规则
     const columns = columnsArr.map(i => {
+      if (i.key === 'type') {
+        return {
+          ...i,
+          render: (text, record) =>
+            couponTypeList.length && couponTypeList.filter(item => item.id === record.type)[0].name,
+        };
+      }
+      if (i.key === 'mapStatus') {
+        return {
+          ...i,
+          render: (text, record) =>
+            couponStatusList.length &&
+            couponStatusList.filter(item => item.id === record.mapStatus)[0].name,
+        };
+      }
       if (i.key === 'operate') {
         return {
           ...i,
@@ -113,24 +133,27 @@ class CouponList extends React.Component {
                 <Link to={`/market/couponDetail?id=${record.id}&edit=true`}>修改</Link>
               )}
               {['WAIT_ONLINE', 'SUSPEND'].indexOf(record.mapStatus) > -1 && (
-                <Popconfirm title="确定删除？" onConfirm={() => this.handleOperator('delete', record)}>
-                  <span style={{ color: 'red' }}>
-                    删除
-                  </span>
+                <Popconfirm
+                  title="确定删除？"
+                  onConfirm={() => this.handleOperator('delete', record)}
+                >
+                  <span style={{ color: 'red' }}>删除</span>
                 </Popconfirm>
               )}
               {['ONLINE', 'GOING'].indexOf(record.mapStatus) > -1 && (
-                <Popconfirm title="确定下架？" onConfirm={() => this.handleOperator('down', record)}>
-                  <span style={{ color: 'red' }}>
-                    下架
-                  </span>
+                <Popconfirm
+                  title="确定下架？"
+                  onConfirm={() => this.handleOperator('down', record)}
+                >
+                  <span style={{ color: 'red' }}>下架</span>
                 </Popconfirm>
               )}
               {['WAIT_ONLINE', 'SUSPEND'].indexOf(record.mapStatus) > -1 && (
-                <Popconfirm title="确定上架？" onConfirm={() => this.handleOperator('down', record)}>
-                  <span style={{ color: 'red' }}>
-                    上架
-                  </span>
+                <Popconfirm
+                  title="确定上架？"
+                  onConfirm={() => this.handleOperator('down', record)}
+                >
+                  <span style={{ color: 'red' }}>上架</span>
                 </Popconfirm>
               )}
               <span onClick={() => this.handleOperator('copy', record)}>复制</span>
@@ -151,20 +174,23 @@ class CouponList extends React.Component {
           searchArr={searchArr}
         />
         <BlankLine />
-        <Link to="/market/couponDetail">
-          <Button type="primary" icon="plus" size="large">
-            新建
-          </Button>
-        </Link>
-        <BlankLine />
-        {/* 列表部分 */}
-        <Table
-          loading={tableLoading}
-          rowKey={record => record.key}
-          dataSource={dataSource}
-          columns={columns}
-          pagination={paginationOption}
-        />
+        <Card bordered={false}>
+          <Link to="/market/couponDetail">
+            <Button type="primary" icon="plus" size="large">
+              新建
+            </Button>
+          </Link>
+          <BlankLine />
+          {/* 列表部分 */}
+          <Table
+            loading={tableLoading}
+            rowKey={record => record.key}
+            dataSource={dataSource}
+            scroll={{ x: true }}
+            columns={columns}
+            pagination={paginationOption}
+          />
+        </Card>
       </>
     );
   }

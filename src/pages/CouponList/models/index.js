@@ -33,7 +33,7 @@ export default {
       });
       const res = yield call(getCouponList, payload);
       const result = {
-        list: res.list,
+        list: res.data.list,
         paginationOption: {
           current: payload.pageNum,
           total: res.total,
